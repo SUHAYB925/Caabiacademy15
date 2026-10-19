@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caabi AI Assistant | CAABI ACADEMY</title>
+  <!-- INTEGRATION: copy this <link> into your site's <head> (after your own CSS). -->
+  <link rel="stylesheet" href="caabi-ai.css">
+</head>
+<body style="margin:0;background:#040c0f">
+
+  <!-- INTEGRATION: copy everything from <section class="caabi-ai"> to </section>
+       into your page where the chatbot should appear (e.g. between two existing
+       sections, above the footer). Nothing else in this file is needed. -->
+  <section class="caabi-ai" id="caabi-ai" aria-labelledby="caabi-ai-title">
+    <div class="caabi-ai-inner">
+
+      <!-- Left: copy -->
+      <div class="caabi-ai-copy">
+        <p class="caabi-ai-brand">CAABI ACADEMY</p>
+        <h2 class="caabi-ai-title" id="caabi-ai-title">Caabi AI Assistant: caawiye barasho oo Af-Soomaali ku hadla</h2>
+        <p class="caabi-ai-lead">AI chatbot ku hadla Af-Soomaali oo ardayda ka caawiya fahamka casharrada, sharaxaadda code-ka, iyo su'aalaha koorsooyinka. Mustaqbalka wuxuu jawaabaha ku salayn karaa casharrada Caabi Academy.</p>
+
+        <ul class="caabi-ai-features">
+          <li><span class="caabi-ai-tick" aria-hidden="true"></span><span><strong>Casharro la fahmi karo.</strong> Mawduuc kasta waxaa lagu sharaxaa Af-Soomaali fudud.</span></li>
+          <li><span class="caabi-ai-tick" aria-hidden="true"></span><span><strong>Code tallaabo-tallaabo.</strong> Tusaalayaal gaagaaban oo aad koobi gareyn karto.</span></li>
+          <li><span class="caabi-ai-tick" aria-hidden="true"></span><span><strong>Su'aalaha koorsooyinka.</strong> 20 su'aalood oo diyaar ah, hadda ma u baahna API key.</span></li>
+        </ul>
+
+        <ul class="caabi-ai-topics" aria-label="Mawduucyada">
+          <li>Programming</li>
+          <li>Web Development</li>
+          <li>Artificial Intelligence</li>
+          <li>Barashada Af-Soomaaliga</li>
+        </ul>
+
+        <a class="caabi-ai-cta" href="#caabi-chat">Su'aal weydii Caabi AI</a>
+      </div>
+
+      <!-- Right: chat -->
+      <div class="caabi-chat" id="caabi-chat" role="region" aria-label="Caabi AI Assistant">
+        <header class="caabi-chat-head">
+          <span class="caabi-chat-avatar caabi-chat-avatar--lg" aria-hidden="true">C</span>
+          <div>
+            <p class="caabi-chat-name">Caabi AI Assistant</p>
+            <p class="caabi-chat-status">Diyaar u ah su'aalahaaga</p>
+          </div>
+        </header>
+
+        <!-- Messages (sample conversation; JS appends new ones here) -->
+        <div class="caabi-chat-log" id="caabi-chat-log" role="log" aria-live="polite" tabindex="0" aria-label="Sheekada">
+          <div class="caabi-chat-msg caabi-chat-msg--ai">
+            <span class="caabi-chat-avatar" aria-hidden="true">C</span>
+            <div class="caabi-chat-bubble"><p>Soo dhawoow! Waxaan ahay Caabi AI Assistant. Maxaad maanta rabtaa inaad barato?</p></div>
+          </div>
+          <div class="caabi-chat-msg caabi-chat-msg--user">
+            <div class="caabi-chat-bubble"><p>Waa maxay function (shaqo) code-ka?</p></div>
+          </div>
+          <div class="caabi-chat-msg caabi-chat-msg--ai">
+            <span class="caabi-chat-avatar" aria-hidden="true">C</span>
+            <div class="caabi-chat-bubble">
+              <p>Function waa koox code ah oo magac leh. Mar kasta oo aad u yeedho, waxay qabataa hawl la mid ah, markaa code-ka dib looma qorayo.</p>
+<pre class="caabi-chat-code"><code>function salaan(magac) {
+  return "Soo dhawoow, " + magac;
+}
+console.log(salaan("Axmed"));</code></pre>
+            </div>
+          </div>
+
+          <!-- Typing indicator (shown by JS while the answer is "being written") -->
+          <div class="caabi-chat-msg caabi-chat-msg--ai caabi-chat-typing" hidden>
+            <span class="caabi-chat-avatar" aria-hidden="true">C</span>
+            <div class="caabi-chat-bubble" role="status" aria-label="Caabi AI wuu qorayaa">
+              <span class="caabi-chat-dot"></span><span class="caabi-chat-dot"></span><span class="caabi-chat-dot"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick questions: data-caabi-q is sent as the question -->
+        <div class="caabi-chat-quick" aria-label="Su'aalo degdeg ah">
+          <button type="button" class="caabi-chat-chip" data-caabi-q="Waa maxay doorsoome (variable)?">Waa maxay doorsoome?</button>
+          <button type="button" class="caabi-chat-chip" data-caabi-q="Waa maxay HTML?">Waa maxay HTML?</button>
+          <button type="button" class="caabi-chat-chip" data-caabi-q="Waa maxay Artificial Intelligence (AI)?">Waa maxay AI?</button>
+          <button type="button" class="caabi-chat-chip" data-caabi-q="Sidee u barto Af-Soomaali si fiican?">Sidee u barto Af-Soomaali?</button>
+        </div>
+
+        <form class="caabi-chat-form" novalidate>
+          <label class="caabi-chat-sr" for="caabi-chat-input">Su'aashaada</label>
+          <input class="caabi-chat-input" id="caabi-chat-input" type="text" maxlength="300" autocomplete="off" placeholder="Qor su'aashaada halkan..." aria-describedby="caabi-chat-error">
+          <button class="caabi-chat-send" type="submit">Dir</button>
+        </form>
+        <p class="caabi-chat-error" id="caabi-chat-error" role="alert"></p>
+        <p class="caabi-chat-note">Jawaabaha waa kuwo local ah; API lama isticmaalo.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INTEGRATION: put this <script> just before </body> of your page. -->
+  <script src="caabi-ai.js" defer></script>
+</body>
+</html>
+<style>
+    /* Caabi AI Assistant. Every selector starts with .caabi-ai or .caabi-chat,
+   so nothing here touches the rest of the website. */
+
+.caabi-ai {
+  --caabi-ai-bg: #040c0f;
+  --caabi-ai-card: #071115;
+  --caabi-ai-dark: #03261e;
+  --caabi-ai-brand: #00c896;
+  --caabi-ai-line: #123e37;
+  --caabi-ai-mint: #9cf5db;
+  --caabi-ai-text: #e6f3ef;
+  --caabi-ai-muted: #9bb8b0;
+  --caabi-ai-font: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --caabi-ai-mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  background: var(--caabi-ai-bg);
+  color: var(--caabi-ai-text);
+  font-family: var(--caabi-ai-font);
+  line-height: 1.6;
+  padding: clamp(56px, 9vw, 112px) 20px;
+}
+.caabi-ai *, .caabi-ai *::before, .caabi-ai *::after { box-sizing: border-box; }
+.caabi-ai p, .caabi-ai ul, .caabi-ai h2 { margin: 0; padding: 0; }
+.caabi-ai ul { list-style: none; }
+
+.caabi-ai-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+}
+
+/* ---------- Left column ---------- */
+.caabi-ai-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: .85rem;
+  letter-spacing: .08em;
+  color: var(--caabi-ai-mint);
+}
+.caabi-ai-brand::before {
+  content: "";
+  width: 28px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--caabi-ai-brand);
+}
+.caabi-ai-title {
+  margin: 18px 0 16px;
+  font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+  line-height: 1.12;
+  letter-spacing: -.02em;
+  font-weight: 750;
+  max-width: 16em;
+}
+.caabi-ai-lead {
+  color: var(--caabi-ai-muted);
+  font-size: 1.05rem;
+  max-width: 54ch;
+}
+.caabi-ai-features { display: grid; gap: 16px; margin: 32px 0 28px; }
+.caabi-ai-features li { display: flex; gap: 14px; color: var(--caabi-ai-muted); max-width: 54ch; }
+.caabi-ai-features strong { color: var(--caabi-ai-text); font-weight: 650; }
+.caabi-ai-tick {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  margin-top: 2px;
+  border: 1px solid var(--caabi-ai-line);
+  border-radius: 8px;
+  background: var(--caabi-ai-dark);
+  position: relative;
+}
+.caabi-ai-tick::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 5px;
+  width: 6px;
+  height: 11px;
+  border: solid var(--caabi-ai-brand);
+  border-width: 0 2px 2px 0;
+  transform: rotate(40deg);
+}
+.caabi-ai-topics { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+.caabi-ai-topics li {
+  padding: 6px 14px;
+  border: 1px solid var(--caabi-ai-line);
+  border-radius: 999px;
+  background: var(--caabi-ai-dark);
+  color: var(--caabi-ai-mint);
+  font-size: .875rem;
+}
+.caabi-ai-cta {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 12px;
+  background: var(--caabi-ai-brand);
+  color: var(--caabi-ai-bg);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color .2s ease, transform .2s ease;
+}
+.caabi-ai-cta:hover { background: var(--caabi-ai-mint); transform: translateY(-2px); }
+.caabi-ai-cta:focus-visible,
+.caabi-chat-chip:focus-visible,
+.caabi-chat-send:focus-visible,
+.caabi-chat-log:focus-visible {
+  outline: 2px solid var(--caabi-ai-mint);
+  outline-offset: 3px;
+}
+
+/* ---------- Chat card ---------- */
+.caabi-chat {
+  background: var(--caabi-ai-card);
+  border: 1px solid var(--caabi-ai-line);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, .9), 0 0 0 1px rgba(0, 200, 150, .04);
+}
+.caabi-chat p { margin: 0; }
+.caabi-chat-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--caabi-ai-dark);
+  border-bottom: 1px solid var(--caabi-ai-line);
+}
+.caabi-chat-name { font-weight: 700; line-height: 1.2; }
+.caabi-chat-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .8rem;
+  color: var(--caabi-ai-muted);
+}
+.caabi-chat-status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--caabi-ai-brand);
+}
+.caabi-chat-avatar {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--caabi-ai-brand);
+  color: var(--caabi-ai-bg);
+  font-weight: 800;
+  font-size: .85rem;
+}
+.caabi-chat-avatar--lg { width: 42px; height: 42px; font-size: 1.1rem; }
+
+.caabi-chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 390px;
+  padding: 20px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--caabi-ai-line) transparent;
+}
+.caabi-chat-msg { display: flex; align-items: flex-end; gap: 10px; max-width: 92%; }
+.caabi-chat-msg--user { align-self: flex-end; }
+.caabi-chat-msg[hidden] { display: none; }
+.caabi-chat-bubble {
+  min-width: 0;
+  padding: 12px 15px;
+  font-size: .95rem;
+  overflow-wrap: anywhere;
+}
+.caabi-chat-msg--ai .caabi-chat-bubble {
+  background: var(--caabi-ai-dark);
+  border: 1px solid var(--caabi-ai-line);
+  border-radius: 16px 16px 16px 4px;
+}
+.caabi-chat-msg--user .caabi-chat-bubble {
+  background: var(--caabi-ai-brand);
+  color: var(--caabi-ai-bg);
+  font-weight: 500;
+  border-radius: 16px 16px 4px 16px;
+}
+.caabi-chat-msg { animation: caabi-chat-in .25s ease both; }
+@keyframes caabi-chat-in { from { opacity: 0; transform: translateY(6px); } }
+
+.caabi-chat-code {
+  margin: 10px 0 0;
+  padding: 12px 14px;
+  background: var(--caabi-ai-bg);
+  border: 1px solid var(--caabi-ai-line);
+  border-left: 3px solid var(--caabi-ai-brand);
+  border-radius: 10px;
+  overflow-x: auto;
+  color: var(--caabi-ai-mint);
+  font-family: var(--caabi-ai-mono);
+  font-size: .82rem;
+  line-height: 1.55;
+  white-space: pre;
+}
+
+/* Typing indicator */
+.caabi-chat-typing .caabi-chat-bubble { display: flex; gap: 5px; padding: 15px 16px; }
+.caabi-chat-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--caabi-ai-mint);
+  animation: caabi-chat-bounce 1s ease-in-out infinite;
+}
+.caabi-chat-dot:nth-child(2) { animation-delay: .15s; }
+.caabi-chat-dot:nth-child(3) { animation-delay: .3s; }
+@keyframes caabi-chat-bounce { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-5px); opacity: 1; } }
+
+/* Quick questions */
+.caabi-chat-quick { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 20px 14px; }
+.caabi-chat-chip {
+  padding: 8px 14px;
+  border: 1px solid var(--caabi-ai-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--caabi-ai-mint);
+  font: inherit;
+  font-size: .82rem;
+  cursor: pointer;
+  transition: background-color .2s ease, border-color .2s ease;
+}
+.caabi-chat-chip:hover { background: var(--caabi-ai-dark); border-color: var(--caabi-ai-brand); }
+
+/* Input row */
+.caabi-chat-form {
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--caabi-ai-line);
+}
+.caabi-chat-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 46px;
+  padding: 0 14px;
+  background: var(--caabi-ai-bg);
+  border: 1px solid var(--caabi-ai-line);
+  border-radius: 12px;
+  color: var(--caabi-ai-text);
+  font: inherit;
+  font-size: 1rem; /* 16px stops iOS from zooming in */
+}
+.caabi-chat-input::placeholder { color: #6f8c84; }
+.caabi-chat-input:focus { outline: none; border-color: var(--caabi-ai-brand); box-shadow: 0 0 0 3px rgba(0, 200, 150, .25); }
+.caabi-chat-send {
+  min-height: 46px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--caabi-ai-brand);
+  color: var(--caabi-ai-bg);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color .2s ease;
+}
+.caabi-chat-send:hover:not(:disabled) { background: var(--caabi-ai-mint); }
+.caabi-chat-send:disabled { opacity: .5; cursor: not-allowed; }
+.caabi-chat-error { min-height: 1.2em; padding: 0 20px; color: #ff9b8a; font-size: .85rem; }
+.caabi-chat-note { padding: 4px 20px 16px; color: var(--caabi-ai-muted); font-size: .78rem; }
+
+.caabi-chat-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 960px) {
+  .caabi-ai-inner { grid-template-columns: minmax(0, 1fr); }
+  .caabi-ai-title { max-width: none; }
+}
+@media (max-width: 520px) {
+  .caabi-ai { padding-left: 14px; padding-right: 14px; }
+  .caabi-chat-log { height: 340px; padding: 16px; }
+  .caabi-chat-msg { max-width: 100%; }
+  .caabi-chat-quick { padding: 0 16px 12px; }
+  .caabi-chat-send { padding: 0 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .caabi-ai *, .caabi-ai *::before, .caabi-ai *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+</style>
+<script>
+    /* Caabi AI Assistant: local knowledge-base chatbot (no API key needed).
+   Each KB entry: id, q (question), k (keywords, Somali + English), a (answer), code (optional). */
+(function () {
+  'use strict';
+
+  var KB = [
+    // ---- Programming ----
+    { id: 'prog', q: 'Waa maxay barnaamijka (programming)?',
+      k: ['programming', 'barnaamij', 'coding', 'python', 'beginner', 'bilaab'],
+      a: 'Barnaamijku waa tilmaamo tallaabo-tallaabo ah oo aad kombiyuutarka ugu qorto si uu hawl gaar ah u qabto. Haddii aad cusub tahay, Python ama JavaScript waa meelo wanaagsan oo laga bilaabo.' },
+    { id: 'var', q: 'Waa maxay doorsoome (variable)?',
+      k: ['variable', 'variables', 'doorsoome', 'doorsoomaha', 'let', 'const', 'var'],
+      a: 'Doorsoome waa meel xusuusta ku jirta oo magac leh, taasoo qiime ku keydisa. Qiimahaas waa la beddeli karaa marka loo baahdo.',
+      code: 'let magac = "Maryan";\nconst da = 20;\nconsole.log(magac, da);' },
+    { id: 'func', q: 'Waa maxay function (shaqo) code-ka?',
+      k: ['function', 'functions', 'shaqo', 'method'],
+      a: 'Function waa koox code ah oo magac leh. Mar kasta oo aad u yeedho, waxay qabataa hawl la mid ah, markaa code-ka dib looma qorayo.',
+      code: 'function salaan(magac) {\n  return "Soo dhawoow, " + magac;\n}\nconsole.log(salaan("Axmed"));' },
+    { id: 'loop', q: 'Waa maxay loop (wareeg)?',
+      k: ['loop', 'loops', 'wareeg', 'celcelin', 'for loop', 'while'],
+      a: 'Loop wuxuu code-ka ku celceliyaa marar badan isagoo aan dib loo qorin. Waxaa inta badan loo isticmaalaa for iyo while.',
+      code: 'for (let i = 1; i <= 5; i++) {\n  console.log("Tirada: " + i);\n}' },
+    { id: 'array', q: 'Waa maxay array (liis)?',
+      k: ['array', 'arrays', 'liis', 'liiska', 'index'],
+      a: 'Array waa liis qiimayaal ah oo hal doorsoome ku jira. Qayb kasta waxay leedahay lambar (index) oo ka bilaabma 0.',
+      code: 'const koorsooyin = ["HTML", "CSS", "JS"];\nconsole.log(koorsooyin[0]); // HTML' },
+    { id: 'debug', q: 'Sidee u saxaa khaladaadka (errors) code-ka?',
+      k: ['error', 'errors', 'khalad', 'khaladaad', 'bug', 'debug', 'debugging', 'console', 'saxo'],
+      a: 'Marka hore akhri farriinta error-ka: waxay kuu sheegaysaa nooca khaladka iyo sadarka. Kadib isticmaal console.log() si aad u aragto qiimaha doorsoomayaasha, oo hal mar hal isbeddel samee.',
+      code: 'console.log("qiimaha:", da);' },
+
+    // ---- Web Development ----
+    { id: 'html', q: 'Waa maxay HTML?',
+      k: ['html', 'tag', 'taag', 'qalfoof', 'heading'],
+      a: 'HTML waa qalfoofka bogga web-ka. Waxay isticmaashaa tag-yo si ay u qeexdo cinwaanno, qoraal, sawirro iyo badhamo.',
+      code: '<h1>Soo dhawoow</h1>\n<p>Caabi Academy</p>' },
+    { id: 'css', q: 'Waa maxay CSS?',
+      k: ['css', 'style', 'styling', 'stylesheet', 'midab', 'midabada', 'qurxin', 'qurxis'],
+      a: 'CSS waxay bogga u qurxisaa: midabada, far-qoraalka, meelaynta iyo animation-ka. Waxay ka dhigtaa HTML mid muuqaal wanaagsan leh.',
+      code: '.badhan {\n  background: #00c896;\n  color: #040c0f;\n}' },
+    { id: 'js', q: 'Waa maxay JavaScript?',
+      k: ['javascript', 'js', 'firfircoon', 'dom', 'event listener'],
+      a: 'JavaScript waa luqadda bogga web-ka ka dhigta mid firfircoon, tusaale ahaan marka badhan la gujiyo wax ayaa dhaca.',
+      code: 'document.querySelector("button")\n  .addEventListener("click", () => alert("Salaan!"));' },
+    { id: 'resp', q: 'Waa maxay responsive design (mobile friendly)?',
+      k: ['responsive', 'mobile', 'mobayl', 'taleefan', 'tablet', 'shaashad', 'media query', 'cabbir'],
+      a: 'Responsive design waxay ka dhigan tahay in bogga si fiican ugu muuqdo kombiyuutar, tablet iyo taleefan. Waxaa loo isticmaalaa media query iyo cabbirro qaybeed (%, rem).',
+      code: '@media (max-width: 600px) {\n  .tiir { flex-direction: column; }\n}' },
+    { id: 'layout', q: 'Waa maxay Flexbox iyo Grid?',
+      k: ['flexbox', 'flex', 'grid', 'layout', 'meelayn', 'display'],
+      a: 'Flexbox waxay hagaajisaa walxaha hal jiho (saf ama tiir), Grid-kuna wuxuu hagaajiyaa labada jiho (safaf iyo tiirar). Labaduba waa qalab layout oo casri ah.',
+      code: '.kaarar {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 16px;\n}' },
+    { id: 'site', q: 'Sidee u dhistaa website-kayga ugu horreeya?',
+      k: ['website', 'mareeg', 'mareegta', 'bog web', 'bogga web', 'dhis', 'github'],
+      a: 'Ku bilow HTML si aad u dhisto qaabdhismeedka, ka dibna CSS si aad u qurxiso, ugu dambayntana JavaScript si aad firfircooni ugu darto. Samee mashruuc yar, kadibna ku daabac GitHub Pages.' },
+
+    // ---- Artificial Intelligence ----
+    { id: 'ai', q: 'Waa maxay Artificial Intelligence (AI)?',
+      k: ['artificial intelligence', 'ai', 'caqli', 'caqliga'],
+      a: 'Artificial Intelligence (AI) waa tignoolajiyo kombiyuutarada ka caawisa inay sameeyaan hawlo u baahan caqli, sida fahamka luqadda, aqoonsiga sawirka iyo jawaab bixinta.' },
+    { id: 'ml', q: 'Waa maxay Machine Learning (ML)?',
+      k: ['machine learning', 'ml', 'mashiin', 'model', 'training', 'tababar', 'xog', 'data'],
+      a: 'Machine Learning waa qayb ka mid ah AI taasoo kombiyuutarka ka dhigta mid wax ka bartaa xog, halkii xeer walba gacanta laga qori lahaa.' },
+    { id: 'bot', q: 'Waa maxay chatbot, sidee u shaqeeyaa?',
+      k: ['chatbot', 'chat', 'bot', 'assistant', 'caabi ai'],
+      a: 'Chatbot waa barnaamij kula sheekeysta qofka qoraal ahaan. Nooca fudud wuxuu isticmaalaa ereyo muhiim ah, kuwa horumarsanna waxay isticmaalaan model-yo AI. Caabi AI Assistant hadda wuxuu isticmaalaa aqoon local ah.' },
+    { id: 'aihelp', q: 'Sidee AI ardayga ugu caawin karaa casharrada?',
+      k: ['caawin', 'caawis', 'ardayga', 'ardayda', 'casharro', 'casharrada', 'study'],
+      a: 'AI waxay kaa caawin kartaa inay casharrada kuu sharaxdo, code-ka kuu fasirto, kuuna samayso su\'aalo tijaabo ah. Hase ahaatee mar walba hubi jawaabaha, oo macalinkaaga weydii marka aad shaki qabto.' },
+    { id: 'prompt', q: 'Waa maxay prompt-ka AI, sidee su\'aal wanaagsan u weydiiyaa?',
+      k: ['prompt', 'prompts', 'suaal wanaagsan', 'prompt engineering'],
+      a: 'Prompt waa su\'aasha ama tilmaanta aad siiso AI. Si aad jawaab wanaagsan u hesho, noqo mid cad: sheeg mawduuca, heerkaaga iyo qaabka aad rabto (tusaale: "Ii sharax loop si fudud, tusaale ku dar").' },
+
+    // ---- Somali-language learning ----
+    { id: 'somlearn', q: 'Sidee u barto Af-Soomaali si fiican?',
+      k: ['barto af soomaali', 'barashada af soomaali', 'af soomaali si fiican', 'learn somali', 'somali language', 'kor u qaad af'],
+      a: 'Maalin kasta wax akhri, wax qor, dhageyso hadal iyo sheekooyin, oo ereyo cusub buug ku qor. Ku celceli ereyada, oo la hadal dad Af-Soomaali ku hadla.' },
+    { id: 'spell', q: 'Sidee loo qoraa higgaadda Af-Soomaaliga?',
+      k: ['higgaad', 'higaad', 'higgaadda', 'higaadda', 'spelling', 'orthography', 'xarfaha', 'xarfo', 'far laatiin', '1972'],
+      a: 'Af-Soomaaliga waxaa lagu qoraa far Laatiin, kaas oo rasmi loo ansixiyay 1972. Xarfo gaar ah sida c, x, dh, kh iyo sh waxay metelaan codad Soomaali ah, shaqallada dheerna waa la labanlaabaa, tusaale aa iyo ee.' },
+    { id: 'terms', q: 'Maxay yihiin ereyada tignoolajiyada Af-Soomaali?',
+      k: ['erey', 'tignoolaji', 'tarjum', 'turjun', 'translate', 'terminology'],
+      a: 'Ereyo tignoolajiyo oo Soomaali ah: kombiyuutar (computer), barnaamij (program), xog (data), mareeg (website), shabakad (network), furaha sirta (password), khalad (error).' }
+  ];
+
+  var FALLBACK = 'Waan ka xumahay, su\'aashaas kuma jirto aqoonta aan hadda haysto. Isku day inaad ku weydiiso erey muhiim ah (tusaale: HTML, function, AI), ama dooro mid ka mid ah su\'aalaha hoose. Mustaqbalka jawaabaha waxaa lagu salayn karaa casharrada Caabi Academy.';
+  var GREETING = 'Salaan! Waxaan ahay Caabi AI Assistant. Weydii su\'aal ku saabsan programming, web development, AI ama Af-Soomaali.';
+  var GREET_WORDS = ['salaan', 'salaam', 'asc', 'hello', 'hi', 'hey', 'nabad', 'subax'];
+  var MIN_SCORE = 1.3; // minimum match score to accept a KB answer
+
+  /* Lowercase, strip accents/apostrophes/punctuation so "Su'aal", "SUAAL" and "su-aal" compare equally. */
+  function normalize(s) {
+    return String(s).toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/['\u2019\u2018`]/g, '')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+  }
+
+  // Pre-normalize keywords once, so matching stays fast.
+  KB.forEach(function (e) { e.nk = e.k.map(normalize); });
+
+  /* Edit distance between two words (counts typos). Returns 3 early if lengths differ a lot. */
+  function distance(a, b) {
+    if (Math.abs(a.length - b.length) > 2) return 3;
+    var prev = [], cur, i, j;
+    for (j = 0; j <= b.length; j++) prev[j] = j;
+    for (i = 1; i <= a.length; i++) {
+      cur = [i];
+      for (j = 1; j <= b.length; j++) {
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      }
+      prev = cur;
+    }
+    return prev[b.length];
+  }
+
+  /* Score one KB entry against the user's text:
+     phrase hit = 3, exact word = 2, partial word (e.g. "barnaamijka") = 1.6, typo (1-2 letters off) = 1.3. */
+  function scoreEntry(entry, q, tokens) {
+    var total = 0;
+    entry.nk.forEach(function (k) {
+      if (k.indexOf(' ') !== -1) { if (q.indexOf(k) !== -1) total += 3; return; }
+      var best = 0;
+      tokens.forEach(function (t) {
+        if (t === k) best = Math.max(best, 2);
+        else if (k.length >= 4 && t.length >= 4 && (t.indexOf(k) === 0 || (t.length >= 5 && k.indexOf(t) === 0))) best = Math.max(best, 1.6);
+        else if (k.length >= 5 && distance(t, k) <= (k.length >= 8 ? 2 : 1)) best = Math.max(best, 1.3);
+      });
+      total += best;
+    });
+    return total;
+  }
+
+  /* Return the best-matching KB entry, or null if nothing scores high enough. */
+  function findAnswer(text) {
+    var q = normalize(text), tokens = q.split(' ').filter(Boolean), best = null, bestScore = 0;
+    KB.forEach(function (e) {
+      var s = scoreEntry(e, q, tokens);
+      if (s > bestScore) { best = e; bestScore = s; }
+    });
+    return bestScore >= MIN_SCORE ? best : null;
+  }
+
+  /* True when the text is just a greeting such as "salaan" or "hello". */
+  function isGreeting(text) {
+    return normalize(text).split(' ').some(function (t) { return GREET_WORDS.indexOf(t) !== -1; });
+  }
+
+  /* Console helper: run CaabiAI.test() to check that all 20 questions match their own answer. */
+  window.CaabiAI = {
+    test: function () {
+      var rows = KB.map(function (e) {
+        var hit = findAnswer(e.q);
+        return { question: e.q, matched: hit ? hit.id : 'none', ok: !!hit && hit.id === e.id };
+      });
+      console.table(rows);
+      return rows.every(function (r) { return r.ok; });
+    }
+  };
+
+  /* Wire up the chat UI. The ready flag prevents duplicate listeners if the script runs twice. */
+  function init() {
+    var root = document.getElementById('caabi-chat');
+    if (!root || root.dataset.caabiReady === 'true') return;
+    root.dataset.caabiReady = 'true';
+
+    var log = root.querySelector('.caabi-chat-log');
+    var form = root.querySelector('.caabi-chat-form');
+    var input = root.querySelector('.caabi-chat-input');
+    var sendBtn = root.querySelector('.caabi-chat-send');
+    var quick = root.querySelector('.caabi-chat-quick');
+    var errorBox = root.querySelector('.caabi-chat-error');
+    var typing = root.querySelector('.caabi-chat-typing');
+    var cta = document.querySelector('.caabi-ai-cta');
+    var busy = false;
+
+    /* Keep the newest message in view. */
+    function scrollToEnd() { log.scrollTop = log.scrollHeight; }
+
+    /* Build one message bubble. Only textContent is used, so user text can never inject HTML. */
+    function addMessage(role, text, code) {
+      var msg = document.createElement('div');
+      msg.className = 'caabi-chat-msg caabi-chat-msg--' + role;
+      if (role === 'ai') {
+        var av = document.createElement('span');
+        av.className = 'caabi-chat-avatar';
+        av.setAttribute('aria-hidden', 'true');
+        av.textContent = 'C';
+        msg.appendChild(av);
+      }
+      var bubble = document.createElement('div');
+      bubble.className = 'caabi-chat-bubble';
+      var p = document.createElement('p');
+      p.textContent = text;
+      bubble.appendChild(p);
+      if (code) {
+        var pre = document.createElement('pre');
+        pre.className = 'caabi-chat-code';
+        var c = document.createElement('code');
+        c.textContent = code;
+        pre.appendChild(c);
+        bubble.appendChild(pre);
+      }
+      msg.appendChild(bubble);
+      log.insertBefore(msg, typing); // keep the typing indicator last
+      scrollToEnd();
+    }
+
+    /* Show the typing indicator, then reply after a short, natural delay. */
+    function respond(question) {
+      busy = true;
+      sendBtn.disabled = true;
+      typing.hidden = false;
+      scrollToEnd();
+      setTimeout(function () {
+        typing.hidden = true;
+        var hit = findAnswer(question);
+        if (hit) addMessage('ai', hit.a, hit.code);
+        else addMessage('ai', isGreeting(question) ? GREETING : FALLBACK);
+        busy = false;
+        sendBtn.disabled = false;
+      }, 650 + Math.random() * 500);
+    }
+
+    /* Validate and send a question (used by the form and the quick buttons). */
+    function send(text) {
+      var clean = text.trim();
+      if (!clean) {
+        errorBox.textContent = 'Fadlan qor su\'aal ka hor intaadan dirin.';
+        input.focus();
+        return;
+      }
+      if (busy) return;
+      errorBox.textContent = '';
+      addMessage('user', clean);
+      input.value = '';
+      respond(clean);
+    }
+
+    // Send button and Enter key both trigger the form's submit event.
+    form.addEventListener('submit', function (e) { e.preventDefault(); send(input.value); });
+    input.addEventListener('input', function () { errorBox.textContent = ''; });
+    // One delegated listener handles every quick-question button.
+    quick.addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-caabi-q]');
+      if (btn) send(btn.getAttribute('data-caabi-q'));
+    });
+    // CTA scrolls to the chat and focuses the input.
+    if (cta) cta.addEventListener('click', function (e) {
+      e.preventDefault();
+      root.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      input.focus({ preventScroll: true });
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+
+</script>

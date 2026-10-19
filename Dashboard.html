@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#060e12">
+<title>Dashboard | CAABI ACADEMY</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--g:#00c896;--g2:#2eeab9;--bg:#060e12;--side:#08141a;--card:#0c1b21;--card2:#12262e;--tx:#e8f1f4;--mu:#8aa0aa;--bd:rgba(255,255,255,.08);--red:#ff6b81;--yel:#ffc66d;--r:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(900px 500px at 85% -10%,rgba(0,200,150,.10),transparent 60%),var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+.sidebar{position:fixed;inset:0 auto 0 0;width:260px;padding:22px 14px;background:var(--side);border-right:1px solid var(--bd);display:flex;flex-direction:column;z-index:50;overflow-y:auto;transition:transform .25s}
+.brand{display:flex;align-items:center;gap:12px;padding:0 8px 22px;border-bottom:1px solid var(--bd)}
+.brand img{width:42px;height:42px;border-radius:12px;object-fit:cover}
+.brand b{font-size:15px;font-weight:800}.brand b span{color:var(--g)}
+.brand small{display:block;margin-top:4px;color:var(--mu);font-size:10px;letter-spacing:1.2px}
+.nav-label{padding:22px 12px 8px;color:#5f7782;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
+.nav-list{list-style:none;display:grid;gap:4px}
+.nav-link{display:flex;width:100%;align-items:center;gap:12px;border:1px solid transparent;background:none;color:#97acb6;padding:11px 12px;border-radius:12px;font-size:13px;font-weight:500;text-align:left;transition:.2s}
+.nav-link i{width:18px;text-align:center}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,.04)}
+.nav-link.active{color:var(--g2);background:rgba(0,200,150,.10);border-color:rgba(0,200,150,.18)}
+.nav-link .count{margin-left:auto;font-size:11px;color:var(--yel)}
+.tag-new{margin-left:auto;font-size:9px;font-weight:700;padding:3px 7px;border-radius:20px;background:var(--g);color:#032019}
+.sidebar-bottom{margin-top:auto;padding-top:22px}
+.help-card{padding:16px;border:1px solid var(--bd);border-radius:14px;background:linear-gradient(145deg,#10272d,#09161b)}
+.help-card i{color:var(--g);font-size:20px}.help-card h4{font-size:13px;margin:10px 0 6px}
+.help-card p{font-size:11px;line-height:1.7;color:var(--mu)}.help-card .btn{margin-top:12px;width:100%}
+.main{margin-left:260px;min-width:0}
+.topbar{height:78px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(6,14,18,.8);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:30;backdrop-filter:blur(16px)}
+.topbar-left,.topbar-right{display:flex;align-items:center;gap:12px;min-width:0}
+.topbar h2{font-size:18px}.subtitle{color:var(--mu);font-size:12px;margin-top:4px}
+.icon-btn{width:40px;height:40px;display:inline-grid;place-items:center;border:1px solid var(--bd);border-radius:12px;background:var(--card);color:var(--tx);position:relative}
+.mobile-toggle{display:none}
+.dot{width:8px;height:8px;border-radius:50%;position:absolute;top:9px;right:9px;background:var(--g);box-shadow:0 0 0 3px var(--card)}
+.profile-wrap{position:relative}
+.profile-button{display:flex;align-items:center;gap:10px;padding:5px 10px 5px 5px;border:1px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);text-align:left}
+.avatar{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(0,200,150,.25),rgba(0,200,150,.08));color:var(--g2);font-size:13px;font-weight:800}
+.profile-name{display:block;font-size:12px;font-weight:700;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.profile-role{display:block;font-size:10px;color:var(--mu);margin-top:3px}
+.profile-menu{display:none;position:absolute;right:0;top:calc(100% + 8px);width:190px;padding:6px;background:#112229;border:1px solid var(--bd);border-radius:14px;box-shadow:0 20px 50px #0008}
+.profile-menu.open{display:block}
+.profile-menu button{width:100%;padding:10px 12px;border:0;border-radius:9px;background:none;color:var(--tx);text-align:left;font-size:12px}
+.profile-menu button:hover{background:#ffffff0d}.profile-menu .logout{color:var(--red)}
+.content{padding:28px 32px 48px;max-width:1500px;margin:auto}
+.section{display:none}.section.active{display:block;animation:in .25s ease}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.welcome{padding:30px;display:flex;justify-content:space-between;align-items:center;gap:24px;border:1px solid rgba(0,200,150,.2);border-radius:22px;background:radial-gradient(ellipse at 90% 0%,rgba(0,200,150,.18),transparent 50%),linear-gradient(120deg,#0d2329,#0a181d)}
+.welcome h1{font-size:clamp(24px,3vw,34px);letter-spacing:-1px;line-height:1.25;margin-bottom:10px}
+.welcome h1 span{color:var(--g2)}
+.welcome p{color:#a3b8c0;max-width:560px;line-height:1.8;font-size:13px}
+.welcome-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.welcome-art{flex:0 0 130px;height:130px;border-radius:50%;display:grid;place-items:center;border:1px solid #00c89633;background:radial-gradient(circle,#00c89622,transparent 70%);color:var(--g2);font-size:48px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;border:1px solid var(--bd);border-radius:11px;background:var(--card2);color:var(--tx);font-size:12px;font-weight:700;transition:.2s}
+.btn:hover{transform:translateY(-1px);border-color:#ffffff30}
+.btn-primary{background:var(--g);color:#032019;border-color:var(--g)}.btn-primary:hover{background:var(--g2)}
+.btn-danger{color:var(--red);border-color:rgba(255,107,129,.25)}.btn-small{padding:8px 11px;font-size:11px}
+.sh{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:28px 0 16px;flex-wrap:wrap}
+.sh:first-child{margin-top:0}.sh h3{font-size:16px}.sh p{color:var(--mu);font-size:12px;margin-top:5px}
+.muted{color:var(--mu)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.stat{padding:20px;background:var(--card);border:1px solid var(--bd);border-radius:var(--r)}
+.stat-top{display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.stat-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:#00c8961a;color:var(--g)}
+.stat-value{font-size:28px;font-weight:800;margin-top:16px;letter-spacing:-1px}
+.stat-label{font-size:12px;color:var(--mu);margin-top:6px}
+.two{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,.8fr);gap:18px}
+.panel{padding:22px;border:1px solid var(--bd);border-radius:var(--r);background:var(--card);min-width:0}
+.panel h3{font-size:14px}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+.ph p{font-size:11px;color:var(--mu);margin-top:5px}
+.empty{border:1px dashed #ffffff22;border-radius:14px;padding:30px 18px;text-align:center;color:var(--mu);font-size:12px;line-height:1.8}
+.empty i{display:block;font-size:26px;color:#53727e;margin-bottom:10px}
+.empty strong{color:var(--tx);display:block;font-size:13px;margin-bottom:4px}
+.course-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.course-card{overflow:hidden;border:1px solid var(--bd);border-radius:var(--r);background:var(--card);transition:.2s}
+.course-card:hover{border-color:rgba(0,200,150,.3);transform:translateY(-2px)}
+.course-banner{min-height:110px;padding:18px;display:flex;align-items:center;justify-content:space-between;background:radial-gradient(circle at 80% 20%,#00c8962e,transparent 55%),#11262d}
+.course-banner i{font-size:36px;color:var(--g)}
+.course-tag{font-size:10px;font-weight:700;color:var(--g2)}
+.course-body{padding:18px}.course-body h4{font-size:14px;line-height:1.5}
+.course-body p{font-size:12px;color:var(--mu);margin-top:6px;line-height:1.7}
+.pm{display:flex;justify-content:space-between;margin:16px 0 8px;font-size:11px;color:var(--mu)}.pm strong{color:var(--g2)}
+.track{height:6px;background:#1c3139;border-radius:10px;overflow:hidden}
+.fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--g),var(--g2));transition:width .6s}
+.cf{margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.field{width:100%;background:#071419;border:1px solid var(--bd);border-radius:11px;padding:12px 13px;color:var(--tx);outline:none;font-size:13px;transition:.2s}
+.field:focus{border-color:#00c89690;box-shadow:0 0 0 3px #00c8961a}
+.field[readonly]{opacity:.65}
+.search{width:min(260px,100%);position:relative}
+.search i{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--mu);font-size:12px}
+.search input{padding-left:35px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.fg{display:grid;gap:7px}.fg label{font-size:12px;color:#a8bac2;font-weight:600}.fg.full{grid-column:1/-1}
+textarea.field{resize:vertical;min-height:100px}
+.fa{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.stack{display:grid;gap:10px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid var(--bd);border-radius:14px;padding:14px;background:#0a171c}
+.row-main{display:flex;align-items:center;gap:12px;min-width:0}
+.row-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#00c89615;color:var(--g);flex-shrink:0}
+.row h4{font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.row p{color:var(--mu);font-size:11px;margin-top:4px;line-height:1.6;overflow-wrap:anywhere}
+.ra{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end}
+.status{display:inline-flex;gap:5px;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.status.pending{color:var(--yel);background:#ffc66d1a}.status.approved{color:var(--g2);background:#00c8961a}
+.notice{padding:13px 15px;border:1px solid #00c89630;background:#00c8960d;border-radius:13px;color:#b8cad0;font-size:12px;line-height:1.8;margin-bottom:16px}
+.notice i{color:var(--g);margin-right:7px}
+.danger-notice{border-color:#ff6b8140;background:#ff6b810d}.danger-notice i{color:var(--red)}
+.admin-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:22px}
+.admin-stat{padding:16px;border:1px solid var(--bd);background:var(--card);border-radius:14px}
+.admin-stat span{font-size:11px;color:var(--mu)}.admin-stat strong{display:block;font-size:24px;margin-top:8px}
+/* CHAT */
+.chat{display:grid;grid-template-rows:auto 1fr auto;height:min(72vh,680px);border:1px solid var(--bd);border-radius:20px;background:var(--card);overflow:hidden}
+.chat-head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--bd);background:#0a191e}
+.chat-head .avatar{width:42px;height:42px;font-size:18px}
+.chat-head h3{font-size:14px}.chat-head p{font-size:11px;color:var(--mu);margin-top:4px;display:flex;align-items:center;gap:6px}
+.online{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 10px var(--g)}
+.chat-body{overflow-y:auto;padding:22px 20px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth}
+.msg{max-width:min(620px,88%);padding:12px 15px;border-radius:16px;font-size:13px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.bot{align-self:flex-start;background:#112a30;border:1px solid var(--bd);border-bottom-left-radius:4px}
+.msg.user{align-self:flex-end;background:var(--g);color:#032019;font-weight:500;border-bottom-right-radius:4px}
+.msg code,.msg .code{font-family:"JetBrains Mono",Consolas,monospace;font-size:12px}
+.typing{align-self:flex-start;display:flex;gap:5px;padding:14px 16px;background:#112a30;border-radius:16px}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--g);animation:bounce 1s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:none;opacity:.4}30%{transform:translateY(-4px);opacity:1}}
+.chat-foot{padding:14px 16px;border-top:1px solid var(--bd);background:#0a191e}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px}
+.chip{flex-shrink:0;padding:7px 12px;border:1px solid var(--bd);border-radius:20px;background:var(--card2);color:#b9ccd2;font-size:11px;font-weight:600}
+.chip:hover{border-color:var(--g);color:var(--g2)}
+.chat-form{display:flex;gap:10px}
+.chat-form .btn{width:46px;padding:0;flex-shrink:0}
+.disc{margin-top:10px;font-size:10px;color:#587078;text-align:center}
+.footer{text-align:center;color:#5f7782;font-size:11px;padding:28px 0 0}
+.toast{position:fixed;right:20px;bottom:20px;z-index:100;max-width:min(360px,calc(100vw - 40px));padding:14px 17px;border-radius:13px;background:#112a30;border:1px solid #00c8965a;box-shadow:0 12px 35px #0007;font-size:12px;line-height:1.6;display:none}
+.toast.show{display:block;animation:in .2s}
+.overlay{display:none}
+@media(max-width:1100px){.sidebar{width:230px}.main{margin-left:230px}.content{padding:24px 20px 40px}.topbar{padding:0 20px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.welcome-art{display:none}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%);width:275px}.sidebar.open{transform:none}.main{margin-left:0}.mobile-toggle{display:inline-grid}.topbar{height:70px;padding:0 14px}.subtitle,.profile-role{display:none}.content{padding:18px 14px 34px}.overlay.show{display:block;position:fixed;inset:0;background:#000a;z-index:40}.two,.course-grid{grid-template-columns:1fr}.profile-name{max-width:80px}.admin-stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:430px){.stats{gap:10px}.stat{padding:14px}.stat-value{font-size:23px}.form-grid{grid-template-columns:1fr}.fg.full{grid-column:auto}.row{align-items:flex-start;flex-direction:column}.ra{justify-content:flex-start}.notif-btn{display:none}.welcome{padding:22px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+  <a class="brand" href="INDEX.HTML">
+    <img src="./Images/LOGO.jpeg" alt="Caabi Academy" onerror="this.style.display='none'">
+    <div><b>CAABI <span>ACADEMY</span></b><small>LEARN · GROW · BUILD</small></div>
+  </a>
+  <div class="nav-label">Main Menu</div>
+  <ul class="nav-list">
+    <li><button class="nav-link active" data-section="dashboard"><i class="fa-solid fa-house"></i> Dashboard</button></li>
+    <li><button class="nav-link" data-section="my-courses"><i class="fa-solid fa-book-open"></i> My Courses <span class="count" id="navCourseCount">0</span></button></li>
+    <li><button class="nav-link" data-section="progress"><i class="fa-solid fa-chart-line"></i> My Progress</button></li>
+    <li><button class="nav-link" data-section="certificates"><i class="fa-solid fa-award"></i> Certificates</button></li>
+  </ul>
+  <div class="nav-label">Community</div>
+  <ul class="nav-list">
+    <li><button class="nav-link" data-section="chatbot"><i class="fa-solid fa-robot"></i> Caabi AI <span class="tag-new">AI</span></button></li>
+    <li><button class="nav-link" data-section="notifications"><i class="fa-regular fa-bell"></i> Notifications</button></li>
+  </ul>
+  <div class="nav-label">Account</div>
+  <ul class="nav-list">
+    <li><button class="nav-link" data-section="profile"><i class="fa-regular fa-user"></i> My Profile</button></li>
+    <li><button class="nav-link" data-section="settings"><i class="fa-solid fa-gear"></i> Settings</button></li>
+    <li><button class="nav-link" data-section="support"><i class="fa-regular fa-circle-question"></i> Help &amp; Support</button></li>
+    <li id="adminNavItem" hidden><button class="nav-link" data-section="admin"><i class="fa-solid fa-shield-halved"></i> Admin Panel</button></li>
+  </ul>
+  <div class="sidebar-bottom"><div class="help-card">
+    <i class="fa-solid fa-headset"></i><h4>Ma u baahan tahay caawimaad?</h4>
+    <p>Nala soo xiriir haddii aad dhibaato ku qabto koorsadaada.</p>
+    <button class="btn btn-primary btn-small" data-section="support">La xiriir Support</button>
+  </div></div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="icon-btn mobile-toggle" id="mobileToggle" aria-label="Fur menu"><i class="fa-solid fa-bars"></i></button>
+      <div><h2 id="pageTitle">Dashboard</h2><div class="subtitle" id="pageSubtitle"></div></div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn notif-btn" data-section="notifications" aria-label="Notifications"><i class="fa-regular fa-bell"></i><span class="dot" id="notificationDot"></span></button>
+      <div class="profile-wrap">
+        <button class="profile-button" id="profileButton" aria-haspopup="true">
+          <span class="avatar" id="topAvatar">CA</span>
+          <span><span class="profile-name" id="topName">Student</span><span class="profile-role" id="topRole">Student Account</span></span>
+          <i class="fa-solid fa-chevron-down" style="font-size:11px;color:var(--mu)"></i>
+        </button>
+        <div class="profile-menu" id="profileMenu">
+          <button data-section="profile"><i class="fa-regular fa-user"></i> &nbsp;My Profile</button>
+          <button data-section="settings"><i class="fa-solid fa-gear"></i> &nbsp;Settings</button>
+          <button class="logout" id="logoutButton"><i class="fa-solid fa-arrow-right-from-bracket"></i> &nbsp;Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content">
+    <!-- DASHBOARD -->
+    <section class="section active" id="section-dashboard">
+      <div class="welcome">
+        <div>
+          <h1>Ku soo dhowow, <span id="welcomeName">Arday</span>!</h1>
+          <p>Halkaan waxaad kala socon kartaa koorsooyinka laguu oggolaaday, horumarkaaga iyo waxbarashadaada.</p>
+          <div class="welcome-actions">
+            <button class="btn btn-primary" data-section="my-courses"><i class="fa-solid fa-play"></i> Sii wad barashada</button>
+            <button class="btn" data-section="chatbot"><i class="fa-solid fa-robot"></i> Weydii Caabi AI</button>
+            <a class="btn" href="Course.html"><i class="fa-solid fa-compass"></i> Baadh koorsooyinka</a>
+          </div>
+        </div>
+        <div class="welcome-art"><i class="fa-solid fa-graduation-cap"></i></div>
+      </div>
+
+      <div class="sh"><div><h3>Waxbarashadaada</h3><p>Xogta koorsooyinka laguu oggolaaday.</p></div></div>
+      <div class="stats">
+        <div class="stat"><div class="stat-top"><span class="muted">Koorsooyinkaaga</span><span class="stat-icon"><i class="fa-solid fa-book-open"></i></span></div><div class="stat-value" id="statCourses">0</div><div class="stat-label">Koorsooyin la oggolaaday</div></div>
+        <div class="stat"><div class="stat-top"><span class="muted">Horumarka</span><span class="stat-icon"><i class="fa-solid fa-chart-line"></i></span></div><div class="stat-value" id="statProgress">0%</div><div class="stat-label">Celceliska horumarkaaga</div></div>
+        <div class="stat"><div class="stat-top"><span class="muted">Dhammaaday</span><span class="stat-icon"><i class="fa-solid fa-circle-check"></i></span></div><div class="stat-value" id="statCompleted">0</div><div class="stat-label">Koorsooyin aad dhammaysay</div></div>
+        <div class="stat"><div class="stat-top"><span class="muted">Certificates</span><span class="stat-icon"><i class="fa-solid fa-award"></i></span></div><div class="stat-value" id="statCertificates">0</div><div class="stat-label">Koorsooyin 100% ah</div></div>
+      </div>
+
+      <div class="two">
+        <div>
+          <div class="sh"><div><h3>Koorsooyinkayga</h3><p>Koorsooyinka kuu furan hadda.</p></div><button class="btn btn-small" data-section="my-courses">Dhammaan <i class="fa-solid fa-arrow-right"></i></button></div>
+          <div class="course-grid" id="dashboardCourses"></div>
+          <div class="empty" id="dashboardEmpty"><i class="fa-solid fa-book-open"></i><strong>Weli koorso laguma darin</strong>Marka Admin-ku xaqiijiyo lacag-bixintaada, koorsadaadu halkan ayay ka soo muuqan doontaa.<br><br><a class="btn btn-primary btn-small" href="Course.html">Baadh koorsooyinka</a></div>
+        </div>
+        <div>
+          <div class="sh"><div><h3>Account-kaaga</h3><p>Macluumaadka koontada.</p></div></div>
+          <div class="panel">
+            <div class="stack">
+              <div class="row"><div class="row-main"><div class="row-icon"><i class="fa-regular fa-user"></i></div><div><h4 id="dashProfileName">Student</h4><p>Magacaaga</p></div></div></div>
+              <div class="row"><div class="row-main"><div class="row-icon"><i class="fa-regular fa-envelope"></i></div><div><h4 id="dashProfileEmail">Email</h4><p>Email-ka koontada</p></div></div></div>
+              <div class="row"><div class="row-main"><div class="row-icon"><i class="fa-solid fa-user-shield"></i></div><div><h4 id="dashProfileRole">Student</h4><p>Nooca koontada</p></div></div></div>
+            </div>
+            <button class="btn" style="width:100%;margin-top:14px" data-section="profile">Wax ka beddel profile-ka <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MY COURSES -->
+    <section class="section" id="section-my-courses">
+      <div class="sh"><div><h3>Koorsooyinkayga</h3><p>Halkan waxaa ku jira oo keliya koorsooyinka Admin-ku kuu oggolaaday.</p></div>
+        <div class="toolbar"><div class="search"><i class="fa-solid fa-magnifying-glass"></i><input class="field" id="courseSearch" placeholder="Raadi koorso..." aria-label="Raadi koorso"></div>
+        <a class="btn btn-primary" href="Course.html"><i class="fa-solid fa-plus"></i> Koorsooyin cusub</a></div></div>
+      <div class="notice"><i class="fa-solid fa-circle-info"></i>Haddii aad lacag bixisay balse koorsadu aanay muuqan, la xiriir Admin-ka si uu u xaqiijiyo lacagta.</div>
+      <div class="course-grid" id="allCourses"></div>
+      <div class="empty" id="coursesEmpty"><i class="fa-solid fa-lock"></i><strong>Ma lihid koorsooyin la oggolaaday</strong>Koorsada aad iibsatay waxay halkan ka soo muuqanaysaa marka Admin-ku xaqiijiyo lacag-bixintaada.<br><br><a class="btn btn-primary btn-small" href="Course.html">Soo iibso koorso</a></div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section class="section" id="section-progress">
+      <div class="sh"><div><h3>Horumarkayga</h3><p>La soco inta aad ka qabatay koorso kasta.</p></div></div>
+      <div class="panel">
+        <div class="stack" id="progressList"></div>
+        <div class="empty" id="progressEmpty"><i class="fa-solid fa-chart-line"></i><strong>Horumar weli ma jiro</strong>Marka koorso laguu oggolaado ayaa halkan ka soo muuqan doonta.</div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATES -->
+    <section class="section" id="section-certificates">
+      <div class="sh"><div><h3>Certificates</h3><p>Koorsooyinka aad dhammaysay.</p></div></div>
+      <div class="notice"><i class="fa-solid fa-award"></i>Koorso dhammaystiran waa mid horumarkeedu gaaray 100%. Shahaado rasmi ah waxay u baahan kartaa in nidaamka shahaadooyinka la isku xiro.</div>
+      <div class="stack" id="certificateList"></div>
+      <div class="empty" id="certificatesEmpty"><i class="fa-solid fa-award"></i><strong>Weli shahaado ma lihid</strong>Dhammaystir koorso si ay halkan uga muuqato.</div>
+    </section>
+
+    <!-- CAABI AI -->
+    <section class="section" id="section-chatbot">
+      <div class="sh"><div><h3>Caabi AI</h3><p>Kaaliyahaaga waxbarasho ee Af-Soomaaliga ku hadla.</p></div></div>
+      <div class="chat">
+        <div class="chat-head">
+          <div class="avatar">C</div>
+          <div><h3>Caabi AI Assistant</h3><p><span class="online"></span> Diyaar u ah su'aalahaaga</p></div>
+        </div>
+        <div class="chat-body" id="chatBody" aria-live="polite"></div>
+        <div class="chat-foot">
+          <div class="chips" id="chips"></div>
+          <form class="chat-form" id="chatForm">
+            <input class="field" id="chatInput" placeholder="Weydii su'aal ku saabsan casharka..." autocomplete="off" aria-label="Su'aashaada">
+            <button class="btn btn-primary" type="submit" aria-label="Dir"><i class="fa-solid fa-arrow-up"></i></button>
+          </form>
+          <div class="disc">Jawaabaha waa in la hubiyaa. Caabi AI waxay ka jawaabaysaa mowduucyada barashada keliya.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTIFICATIONS -->
+    <section class="section" id="section-notifications">
+      <div class="sh"><div><h3>Notifications</h3><p>Macluumaad ku saabsan koontadaada iyo koorsooyinkaaga.</p></div></div>
+      <div class="panel">
+        <div class="stack" id="notificationsList"></div>
+        <div class="empty" id="notificationsEmpty"><i class="fa-regular fa-bell"></i><strong>Wax ogeysiis ah ma jiro</strong>Ogeysiisyadaada halkan ayay ka muuqan doonaan.</div>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="section" id="section-profile">
+      <div class="sh"><div><h3>My Profile</h3><p>Macluumaadkaaga gaarka ah.</p></div></div>
+      <div class="panel"><form id="profileForm">
+        <div class="form-grid">
+          <div class="fg"><label for="profileName">Magaca buuxa</label><input class="field" id="profileName" required maxlength="100"></div>
+          <div class="fg"><label for="profileEmail">Email</label><input class="field" id="profileEmail" type="email" readonly></div>
+          <div class="fg"><label for="profilePhone">Telefoon</label><input class="field" id="profilePhone" placeholder="Geli lambarkaaga"></div>
+          <div class="fg"><label for="profileRole">Role</label><input class="field" id="profileRole" readonly></div>
+        </div>
+        <div class="fa"><button class="btn btn-primary" type="submit">Kaydi isbeddellada</button></div>
+      </form></div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="section" id="section-settings">
+      <div class="sh"><div><h3>Settings</h3><p>Dejimaha koontadaada.</p></div></div>
+      <div class="panel">
+        <h3 style="margin-bottom:10px">Koontadaada</h3>
+        <p class="muted" style="font-size:12px;line-height:1.8;margin-bottom:18px">Waxaad wax ka beddeli kartaa macluumaadka profile-kaaga. Si loo beddelo password-ka, isticmaal bogga password reset haddii aad diyaarsatay.</p>
+        <div class="toolbar"><button class="btn" data-section="profile"><i class="fa-regular fa-user"></i> Fur profile-ka</button>
+        <button class="btn btn-danger" id="settingsLogout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button></div>
+      </div>
+    </section>
+
+    <!-- SUPPORT -->
+    <section class="section" id="section-support">
+      <div class="sh"><div><h3>Help &amp; Support</h3><p>La xiriir CAABI ACADEMY.</p></div></div>
+      <div class="two">
+        <div class="panel">
+          <h3 style="margin-bottom:16px">Noo soo dir fariin</h3>
+          <form id="supportForm"><div class="form-grid">
+            <div class="fg full"><label for="supportSubject">Mawduuca</label><input class="field" id="supportSubject" required placeholder="Tusaale: Course access"></div>
+            <div class="fg full"><label for="supportMessage">Fariintaada</label><textarea class="field" id="supportMessage" required placeholder="Sharax dhibaatadaada..."></textarea></div>
+          </div>
+          <div class="fa"><button class="btn btn-primary" type="submit"><i class="fa-regular fa-paper-plane"></i> Diyaari fariinta</button></div></form>
+          <p class="muted" style="font-size:11px;line-height:1.7;margin-top:12px">Foomkani fariinta si toos ah uma dirayo server. Ku dar <code>SUPPORT_EMAIL</code> JavaScript-ka si email loogu furo.</p>
+        </div>
+        <div class="panel"><div class="stack">
+          <div class="row"><div class="row-main"><div class="row-icon"><i class="fa-solid fa-credit-card"></i></div><div><h4>Lacag-bixinta</h4><p>La xiriir Admin-ka si lacagta loo xaqiijiyo.</p></div></div></div>
+          <div class="row"><div class="row-main"><div class="row-icon"><i class="fa-solid fa-book"></i></div><div><h4>Course access</h4><p>Codso in laguu furo koorsada aad iibsatay.</p></div></div></div>
+          <div class="row"><div class="row-main"><div class="row-icon"><i class="fa-solid fa-shield-halved"></i></div><div><h4>Security</h4><p>Ha la wadaagin password-kaaga cid kale.</p></div></div></div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section class="section" id="section-admin">
+      <div class="sh"><div><h3>Admin Panel</h3><p>Maamul codsiyada lacag-bixinta iyo gelitaanka koorsooyinka.</p></div></div>
+      <div class="notice danger-notice"><i class="fa-solid fa-triangle-exclamation"></i>DEMO MODE: Xogtan waxay ku kaydsan tahay localStorage browser-kan. Tani ma aha maamul ammaan ah oo production ah.</div>
+      <div class="admin-stats">
+        <div class="admin-stat"><span>Codsiyada sugaya</span><strong id="adminPending">0</strong></div>
+        <div class="admin-stat"><span>Enrollments la oggolaaday</span><strong id="adminApproved">0</strong></div>
+        <div class="admin-stat"><span>Arday la diiwaangeliyey</span><strong id="adminStudents">0</strong></div>
+      </div>
+      <div class="panel" style="margin-bottom:18px">
+        <div class="ph"><div><h3>Codsiyada lacag-bixinta</h3><p>Xaqiiji transaction-ka iyo telefoonka ka hor intaadan koorsada furin.</p></div><button class="btn btn-small" id="refreshAdmin"><i class="fa-solid fa-rotate"></i> Refresh</button></div>
+        <div class="stack" id="adminRequests"></div>
+        <div class="empty" id="adminRequestsEmpty"><i class="fa-solid fa-inbox"></i><strong>Codsi sugaya ma jiro</strong>Codsiyada cusub halkan ayay ka muuqan doonaan.</div>
+      </div>
+      <div class="panel">
+        <div class="ph"><div><h3>Koorsooyinka la oggolaaday</h3><p>Waxaad ka noqon kartaa oggolaanshaha haddii loo baahdo.</p></div></div>
+        <div class="stack" id="adminEnrollments"></div>
+        <div class="empty" id="adminEnrollmentsEmpty"><i class="fa-solid fa-user-check"></i><strong>Enrollment ma jiro</strong>Marka codsi la oggolaado, koorsadu halkan ayay ka muuqanaysaa.</div>
+      </div>
+    </section>
+
+    <div class="footer">© <span id="year"></span> CAABI ACADEMY · LEARN · GROW · BUILD</div>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+"use strict";
+const ADMIN_EMAIL = "admin@caabiacademy.com";   // Beddel email-ka Admin-ka
+const SUPPORT_EMAIL = "";                        // Ku dar email-ka support-ka
+const K = {cur:"caabiCurrentUser",legacy:"caabiUser",req:"caabiPurchaseRequests",enr:"caabiEnrollments",users:"caabiUsers",prog:"caabiCourseProgress",notif:"caabiNotifications"};
+
+const CATALOG = {
+  "html-css":{title:"HTML & CSS Complete Course",category:"Web Development",icon:"fa-code",description:"Baro aasaaska samaynta website-yada.",url:"HTML CSS COURSE.html"},
+  "javascript":{title:"JavaScript Masterclass",category:"Web Development",icon:"fa-js",description:"Baro JavaScript, DOM iyo interactive websites.",url:"JavaScript.html"},
+  "premiere-pro":{title:"Adobe Premiere Pro",category:"Video Editing",icon:"fa-film",description:"Baro video editing iyo samaynta muuqaallo.",url:"Premiere Pro.html"},
+  "photoshop":{title:"Adobe Photoshop",category:"Graphic Design",icon:"fa-image",description:"Baro graphic design iyo image editing.",url:"Photoshop.html"}
+};
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const read = (k, f) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : f; } catch { return f; } };
+const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { toast("Xogta lama kaydin karin (storage buuxa ama la xiray)."); } };
+const txt = v => String(v ?? "").trim();
+const lc = v => txt(v).toLowerCase();
+const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const arr = (k) => { const d = read(k, []); return Array.isArray(d) ? d : []; };
+
+let user = read(K.cur, null) || read(K.legacy, null);
+if (!user || typeof user !== "object" || !user.email) { location.replace("Login.html"); return; }
+const email = lc(user.email);
+const isAdmin = lc(user.role) === "admin" || email === ADMIN_EMAIL.toLowerCase();
+const displayName = txt(user.name || user.fullName || user.username) || "Arday";
+
+let tt;
+function toast(m) { const t = $("#toast"); t.textContent = m; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 3500); }
+
+const course = id => ({id, ...(CATALOG[id] || {title:id || "Course aan la aqoon",category:"Course",icon:"fa-book",description:"Macluumaadka koorsadan ku dar CATALOG.",url:"Course.html"})});
+const mine = () => arr(K.enr).filter(e => lc(e.studentEmail) === email && e.status === "approved");
+function progressOf(e) {
+  const map = read(K.prog, {}), s = Number(map?.[`${email}:${e.courseId}`]);
+  const p = Number.isFinite(s) ? s : Number(e.progress || 0);
+  return Math.max(0, Math.min(100, p || 0));
+}
+const show = (sel, on, d = "block") => { $(sel).style.display = on ? d : "none"; };
+
+const card = e => { const c = course(e.courseId), p = progressOf(e); return `
+<article class="course-card"><div class="course-banner"><div><div class="course-tag">${esc(c.category)}</div><p style="font-size:11px;color:#9db4bd;margin-top:6px">CAABI ACADEMY</p></div><i class="fa-solid ${esc(c.icon)}"></i></div>
+<div class="course-body"><h4>${esc(c.title)}</h4><p>${esc(c.description)}</p>
+<div class="pm"><span>Horumarkaaga</span><strong>${p}%</strong></div><div class="track"><div class="fill" style="width:${p}%"></div></div>
+<div class="cf"><span class="status approved"><i class="fa-solid fa-circle-check"></i> La oggolaaday</span><a class="btn btn-primary btn-small" href="${esc(c.url)}">Sii wad <i class="fa-solid fa-arrow-right"></i></a></div></div></article>`; };
+
+function renderCourses() {
+  const list = mine(), q = lc($("#courseSearch").value);
+  const f = list.filter(e => { const c = course(e.courseId); return lc(c.title).includes(q) || lc(c.category).includes(q); });
+  $("#dashboardCourses").innerHTML = list.slice(0, 2).map(card).join("");
+  show("#dashboardCourses", list.length, "grid"); show("#dashboardEmpty", !list.length);
+  $("#allCourses").innerHTML = f.map(card).join("");
+  show("#allCourses", f.length, "grid"); show("#coursesEmpty", !f.length);
+  $("#navCourseCount").textContent = list.length;
+}
+function renderProgress() {
+  const list = mine();
+  $("#progressList").innerHTML = list.map(e => { const c = course(e.courseId), p = progressOf(e); return `
+<div class="row"><div class="row-main" style="flex:1"><div class="row-icon"><i class="fa-solid ${esc(c.icon)}"></i></div>
+<div style="flex:1;min-width:0"><h4>${esc(c.title)}</h4><p>${p}% ayaa la dhammaystiray</p><div class="track" style="margin-top:10px"><div class="fill" style="width:${p}%"></div></div></div></div>
+<span class="status ${p === 100 ? "approved" : "pending"}">${p === 100 ? "Completed" : "In progress"}</span></div>`; }).join("");
+  show("#progressEmpty", !list.length);
+}
+function renderCerts() {
+  const done = mine().filter(e => progressOf(e) === 100);
+  $("#certificateList").innerHTML = done.map(e => `<div class="row"><div class="row-main"><div class="row-icon"><i class="fa-solid fa-award"></i></div><div><h4>${esc(course(e.courseId).title)}</h4><p>Course progress: 100%</p></div></div><span class="status approved">Completed</span></div>`).join("");
+  show("#certificatesEmpty", !done.length);
+}
+function renderNotifs() {
+  const list = arr(K.notif).filter(n => !n.studentEmail || lc(n.studentEmail) === email).reverse();
+  $("#notificationsList").innerHTML = list.map(n => `<div class="row"><div class="row-main"><div class="row-icon"><i class="fa-regular fa-bell"></i></div><div><h4>${esc(n.title || "Ogeysiis")}</h4><p>${esc(n.message || "")}</p></div></div></div>`).join("");
+  show("#notificationsEmpty", !list.length); show("#notificationDot", list.length);
+}
+function renderStats() {
+  const ps = mine().map(progressOf), done = ps.filter(p => p === 100).length;
+  $("#statCourses").textContent = ps.length;
+  $("#statProgress").textContent = (ps.length ? Math.round(ps.reduce((a, b) => a + b, 0) / ps.length) : 0) + "%";
+  $("#statCompleted").textContent = done; $("#statCertificates").textContent = done;
+}
+function renderAdmin() {
+  if (!isAdmin) return;
+  const reqs = arr(K.req), enrs = arr(K.enr);
+  const pending = reqs.filter(r => r.status === "pending"), approved = enrs.filter(e => e.status === "approved");
+  const emails = new Set(arr(K.users).map(u => lc(u.email)).filter(Boolean)); emails.add(email);
+  $("#adminPending").textContent = pending.length; $("#adminApproved").textContent = approved.length; $("#adminStudents").textContent = emails.size;
+  $("#adminRequests").innerHTML = pending.map(r => `
+<div class="row"><div class="row-main"><div class="row-icon"><i class="fa-solid fa-money-bill-transfer"></i></div><div>
+<h4>${esc(r.studentName || "Arday")} — ${esc(course(r.courseId).title)}</h4>
+<p>Email: ${esc(r.studentEmail || "N/A")}<br>Transaction ID: ${esc(r.transactionId || "N/A")}<br>Telefoonka: ${esc(r.senderPhone || "N/A")}<br>Taariikh: ${esc(r.createdAt || "N/A")}</p>
+<span class="status pending">Sugaya xaqiijin</span></div></div>
+<div class="ra"><button class="btn btn-primary btn-small" data-approve="${esc(r.id)}"><i class="fa-solid fa-check"></i> Approve</button>
+<button class="btn btn-danger btn-small" data-reject="${esc(r.id)}"><i class="fa-solid fa-xmark"></i> Reject</button></div></div>`).join("");
+  show("#adminRequestsEmpty", !pending.length);
+  $("#adminEnrollments").innerHTML = approved.map(e => `
+<div class="row"><div class="row-main"><div class="row-icon"><i class="fa-solid fa-book-open"></i></div><div><h4>${esc(course(e.courseId).title)}</h4>
+<p>Arday: ${esc(e.studentName || "Arday")}<br>Email: ${esc(e.studentEmail || "N/A")}</p><span class="status approved">Access granted</span></div></div>
+<button class="btn btn-danger btn-small" data-revoke="${esc(e.id)}"><i class="fa-solid fa-lock"></i> Revoke</button></div>`).join("");
+  show("#adminEnrollmentsEmpty", !approved.length);
+}
+const renderAll = () => { renderCourses(); renderProgress(); renderCerts(); renderNotifs(); renderStats(); renderAdmin(); };
+
+function notify(studentEmail, title, message) {
+  const n = arr(K.notif); n.push({id:`notice-${Date.now()}`, studentEmail:lc(studentEmail), title, message, createdAt:new Date().toISOString()}); write(K.notif, n);
+}
+function findPending(id) {
+  if (!isAdmin) { toast("Ma lihid oggolaanshaha Admin."); return []; }
+  const reqs = arr(K.req), r = reqs.find(x => String(x.id) === String(id));
+  if (!r || r.status !== "pending") { toast("Codsigan lama helin ama hore ayaa loo maamulay."); return []; }
+  return [reqs, r];
+}
+function approve(id) {
+  const [reqs, r] = findPending(id); if (!r) return;
+  const enrs = arr(K.enr);
+  if (!enrs.some(e => lc(e.studentEmail) === lc(r.studentEmail) && e.courseId === r.courseId && e.status === "approved")) {
+    enrs.push({id:`enr-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`, studentName:r.studentName || "Arday", studentEmail:lc(r.studentEmail), courseId:r.courseId, status:"approved", progress:0, approvedAt:new Date().toISOString()});
+    write(K.enr, enrs);
+  }
+  Object.assign(r, {status:"approved", reviewedAt:new Date().toISOString(), reviewedBy:email}); write(K.req, reqs);
+  notify(r.studentEmail, "Koorsada waa laguu furay", `Codsigaaga ${course(r.courseId).title} waa la oggolaaday. Hadda waxaad ka geli kartaa My Courses.`);
+  renderAll(); toast("Codsiga waa la oggolaaday.");
+}
+function reject(id) {
+  const [reqs, r] = findPending(id); if (!r) return;
+  if (!confirm("Ma hubtaa inaad diidayso codsigan?")) return;
+  Object.assign(r, {status:"rejected", reviewedAt:new Date().toISOString(), reviewedBy:email}); write(K.req, reqs);
+  notify(r.studentEmail, "Codsiga lacag-bixinta waa la diiday", `Codsigaaga ${course(r.courseId).title} lama oggola. Fadlan la xiriir Admin-ka.`);
+  renderAll(); toast("Codsiga waa la diiday.");
+}
+function revoke(id) {
+  if (!isAdmin) return toast("Ma lihid oggolaanshaha Admin.");
+  if (!confirm("Ma hubtaa inaad ka noqonayso oggolaanshaha koorsadan?")) return;
+  const enrs = arr(K.enr), t = enrs.find(e => String(e.id) === String(id));
+  if (!t) return toast("Enrollment-ka lama helin.");
+  Object.assign(t, {status:"revoked", revokedAt:new Date().toISOString()}); write(K.enr, enrs);
+  renderAll(); toast("Oggolaanshaha waa laga noqday.");
+}
+
+const TITLES = {
+  dashboard:["Dashboard","Ku soo dhowow goobtaada waxbarasho."],
+  "my-courses":["My Courses","Koorsooyinka laguu oggolaaday."],
+  progress:["My Progress","La soco horumarka waxbarashadaada."],
+  certificates:["Certificates","Koorsooyinka aad dhammaysay."],
+  chatbot:["Caabi AI","Kaaliyahaaga waxbarasho."],
+  notifications:["Notifications","Ogeysiisyada koontadaada."],
+  profile:["My Profile","Maamul macluumaadkaaga."],
+  settings:["Settings","Dejimaha koontadaada."],
+  support:["Help & Support","Caawimaad iyo xiriir."],
+  admin:["Admin Panel","Maamul codsiyada iyo course access."]
+};
+function go(name) {
+  if (!TITLES[name]) return;
+  if (name === "admin" && !isAdmin) return toast("Qaybtan waxaa geli kara Admin oo keliya.");
+  $$(".section").forEach(s => s.classList.toggle("active", s.id === `section-${name}`));
+  $$(".nav-link").forEach(l => l.classList.toggle("active", l.dataset.section === name));
+  $("#pageTitle").textContent = TITLES[name][0]; $("#pageSubtitle").textContent = TITLES[name][1];
+  $("#profileMenu").classList.remove("open"); $("#sidebar").classList.remove("open"); $("#overlay").classList.remove("show");
+  if (name === "admin") renderAdmin();
+  if (name === "chatbot") setTimeout(() => $("#chatInput").focus(), 50);
+  scrollTo({top:0});
+}
+
+document.addEventListener("click", e => {
+  const n = e.target.closest("[data-section]"); if (n) { e.preventDefault(); go(n.dataset.section); }
+  const a = e.target.closest("[data-approve]"); if (a) approve(a.dataset.approve);
+  const r = e.target.closest("[data-reject]"); if (r) reject(r.dataset.reject);
+  const v = e.target.closest("[data-revoke]"); if (v) revoke(v.dataset.revoke);
+  if (!e.target.closest(".profile-wrap")) $("#profileMenu").classList.remove("open");
+});
+$("#mobileToggle").onclick = () => { $("#sidebar").classList.toggle("open"); $("#overlay").classList.toggle("show"); };
+$("#overlay").onclick = () => { $("#sidebar").classList.remove("open"); $("#overlay").classList.remove("show"); };
+$("#profileButton").onclick = () => $("#profileMenu").classList.toggle("open");
+function logout() { if (!confirm("Ma hubtaa inaad ka baxayso koontadaada?")) return; localStorage.removeItem(K.cur); localStorage.removeItem(K.legacy); location.href = "Login.html"; }
+$("#logoutButton").onclick = logout; $("#settingsLogout").onclick = logout;
+$("#refreshAdmin").onclick = () => { renderAll(); toast("Admin Panel waa la cusboonaysiiyey."); };
+$("#courseSearch").oninput = renderCourses;
+
+$("#profileForm").onsubmit = e => {
+  e.preventDefault();
+  const name = txt($("#profileName").value); if (!name) return toast("Fadlan geli magacaaga.");
+  user.name = name; user.phone = txt($("#profilePhone").value); write(K.cur, user);
+  ["#welcomeName", "#topName", "#dashProfileName"].forEach(s => $(s).textContent = name);
+  $("#topAvatar").textContent = name.slice(0, 2).toUpperCase();
+  toast("Profile-ka waa la kaydiyey browser-kan.");
+};
+$("#supportForm").onsubmit = e => {
+  e.preventDefault();
+  const s = txt($("#supportSubject").value), body = `Account: ${email}\nSubject: ${s}\n\n${txt($("#supportMessage").value)}`;
+  if (SUPPORT_EMAIL) location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(body)}`;
+  else toast("Ku dar SUPPORT_EMAIL gudaha JavaScript si fariinta email loogu diyaariyo.");
+};
+
+/* ===== CAABI AI CHATBOT ===== */
+const KB = [
+ [["programming","barnaamij"],"Programming waa habka kombiyuutarka loogu qoro amarro uu fulinayo si uu u qabto hawlo gaar ah, sida samaynta websites, apps iyo software."],
+ [["html"],"HTML waa luuqadda lagu dhiso qaab-dhismeedka website-ka: cinwaanno, qoraallo, sawirro, links iyo forms.\n\nTusaale:\n<h1>Caabi Academy</h1>\n<p>Baro programming-ka Af-Soomaali.</p>"],
+ [["css"],"CSS waa luuqadda lagu qurxiyo website-ka: midabbada, fonts-ka, layout-ka, animations-ka iyo responsive design-ka.\n\nTusaale:\nh1 {\n  color: #00c896;\n}"],
+ [["javascript","java script"],"JavaScript waa luuqad programming ah oo website-ka ka dhigta mid interactive ah (buttons, menus, form validation).\n\nTusaale:\nalert(\"Ku soo dhawoow Caabi Academy!\");"],
+ [["html iyo css","farqiga html","html css javascript"],"• HTML = Qaab-dhismeedka\n• CSS = Qurxinta\n• JavaScript = Shaqooyinka iyo isdhexgalka"],
+ [["python"],"Python waa luuqad programming ah oo syntax fudud leh. Waxaa loo isticmaalaa AI, data science, automation iyo backend.\n\nTusaale:\nname = \"Suhayb\"\nprint(name)"],
+ [["variable","variables"],"Variable waa magac loo isticmaalo kaydinta xogta barnaamijka dhexdiisa.\n\nTusaale:\nlet name = \"Suhayb\";\nconsole.log(name);"],
+ [["function","functions"],"Function waa qayb code ah oo qabata hawl gaar ah, waxaadna dib u isticmaali kartaa.\n\nTusaale:\nfunction salaam() {\n  return \"Salaan Caabi Academy!\";\n}"],
+ [["frontend","backend","front end","back end"],"Frontend waa qaybta isticmaaluhu arko oo la falgalo. Backend waa qaybta maamusha xogta, authentication-ka iyo database-ka.\n\nTusaale: bogga login-ka waa frontend; server-ka xaqiijiya xogta waa backend."],
+ [["api"],"API waa hab ay laba software isku dhaafsadaan xog iyo amarro. Tusaale: chatbot wuxuu API u diri karaa su'aasha ardayga si AI model uga jawaabo."],
+ [["artificial intelligence","ai waa maxay","waa maxay ai"],"Artificial Intelligence (AI) waa teknoolojiyad u oggolaanaysa kombiyuutarrada inay fahmaan luuqadda, falanqeeyaan xogta, aqoonsadaan sawirrada oo qoraal soo saaraan."],
+ [["machine learning","ml"],"Machine Learning waa qayb ka mid ah AI oo nidaamyada u suurtagelisa inay xogta ka bartaan qaabab si ay saadaal u sameeyaan, iyagoo aan hawl kasta si gaar ah loogu qorin."],
+ [["deep learning"],"Deep Learning waa qayb ka mid ah Machine Learning oo adeegsata neural networks leh lakabyo badan, loona isticmaalo codka, sawirrada iyo luuqadda."],
+ [["generative ai"],"Generative AI waa AI abuuri kara waxyaabo cusub sida qoraal, sawirro, cod, video iyo code."],
+ [["llm","large language model"],"LLM (Large Language Model) waa AI model lagu tababaray xog qoraal oo aad u badan si uu u fahmo una soo saaro luuqadda."],
+ [["chatbot","chat bot"],"AI chatbot waa barnaamij kula sheekaysan kara adigoo adeegsanaya AI. Wuxuu ka jawaabi karaa su'aalaha oo caawin karaa waxbarashada."],
+ [["prompt"],"Prompt Engineering waa habka loo diyaariyo tilmaamo cad si AI looga helo jawaab wanaagsan.\n\nTusaale: \"Ii sharax HTML Af-Soomaali, kuna dar tusaale code ah.\""],
+ [["ai agent","agentic"],"AI Agent waa nidaam AI ah oo fahmi kara ujeeddo, qorsheeyo tallaabooyin, isticmaali kara qalab, oo fuliya hawlo."],
+ [["baro ai","barashada ai","ai ku bilaabo"],"Sida loo bilaabo AI:\n1. Baro aasaaska programming-ka (Python).\n2. Baro xogta iyo falanqaynteeda.\n3. Faham Machine Learning.\n4. Baro isticmaalka AI APIs.\n5. Dhis project yar sida chatbot.\n\nTalo: aasaaska si fiican u baro ka hor mowduucyada adag."],
+ [["asc","salaam","hello","hi","haye"],"Wa alaykum salaam! 👋 Maxaad maanta rabtaa inaad barato?"]
+];
+const norm = t => t.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim();
+function answer(q) {
+  const m = " " + norm(q) + " ";
+  if (m.trim() === "") return "Fadlan qor su'aasha aad rabto inaan kaaga jawaabo.";
+  let best = null, score = 0;
+  for (const [keys, a] of KB) for (const k of keys) {
+    const kk = " " + norm(k) + " ";
+    if (m.includes(kk)) { const s = k.length; if (s > score) { score = s; best = a; } }
+  }
+  return best || "Waan ka xumahay, weli jawaab gaar ah uma hayo su'aashaas.\n\nWaxaad i weydiin kartaa:\n• HTML, CSS iyo JavaScript\n• Python, Variable, Function\n• Frontend iyo Backend, API\n• AI, Machine Learning, LLM, Prompt";
+}
+const body = $("#chatBody");
+function bubble(t, who) { const d = document.createElement("div"); d.className = `msg ${who}`; d.textContent = t; body.appendChild(d); body.scrollTop = body.scrollHeight; return d; }
+function ask(text) {
+  const q = txt(text); if (!q) return;
+  bubble(q, "user");
+  const ty = document.createElement("div"); ty.className = "typing"; ty.innerHTML = "<span></span><span></span><span></span>"; body.appendChild(ty); body.scrollTop = body.scrollHeight;
+  setTimeout(() => { ty.remove(); bubble(answer(q), "bot"); }, 600);
+}
+bubble("Asc! 👋 Waxaan ahay Caabi AI. Weydii wax ku saabsan HTML, CSS, JavaScript, Python ama AI.", "bot");
+["HTML waa maxay?","CSS waa maxay?","JavaScript waa maxay?","Python waa maxay?","API waa maxay?","Sideen AI ku bilaabaa?"].forEach(q => {
+  const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = q; b.onclick = () => ask(q); $("#chips").appendChild(b);
+});
+$("#chatForm").onsubmit = e => { e.preventDefault(); const i = $("#chatInput"); ask(i.value); i.value = ""; };
+
+/* ===== INIT ===== */
+$("#welcomeName").textContent = displayName; $("#topName").textContent = displayName;
+$("#topAvatar").textContent = displayName.slice(0, 2).toUpperCase();
+$("#topRole").textContent = isAdmin ? "Administrator" : "Student Account";
+$("#dashProfileName").textContent = displayName; $("#dashProfileEmail").textContent = user.email; $("#dashProfileRole").textContent = isAdmin ? "Admin" : "Student";
+$("#profileName").value = displayName; $("#profileEmail").value = user.email; $("#profilePhone").value = user.phone || ""; $("#profileRole").value = isAdmin ? "Admin" : "Student";
+$("#adminNavItem").hidden = !isAdmin; $("#year").textContent = new Date().getFullYear();
+$("#pageSubtitle").textContent = TITLES.dashboard[1];
+renderAll();
+})();
+</script>
+</body>
+</html>

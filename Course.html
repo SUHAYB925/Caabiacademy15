@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Caabi Academy - Discover Courses: project-based learning oo loo habeeyay category iyo level.">
+  <meta name="theme-color" content="#061014">
+  <title>Courses | Caabi Academy</title>
+  <link rel="icon" type="image/png" href="./cropped_circle_image%20(3).png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============ TOKENS ============ */
+    :root {
+      --bg: #061014; --surface: #0a171c; --panel: #071115; --deep: #040c0f;
+      --accent: #00c896; --accent-soft: #38f5be; --mint: #9cf5db; --kicker: #b4f6e2;
+      --text: #f5fafc; --muted: #9bafba; --faint: #7d929a;
+      --line: #1b3036; --line-strong: #263a40;
+      --hover: #00c896;                       /* midabka qoraalka marka cursor lagu mariyo */
+      --font: "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    }
+
+    /* ============ BASE ============ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+    .wrap { width: min(1180px, 90%); margin: auto; }
+    :is(h1, h2, h3, p, li, small, strong, a) { transition: color .2s ease; }
+
+    /* ============ BUTTONS ============ */
+    .btn { min-height: 46px; padding: 0 20px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: 12px; font-size: 14px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: transform .25s, background .25s, color .25s, border-color .25s, box-shadow .25s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn span { display: inline-block; transition: transform .25s; }
+    .btn:hover span { transform: translate(2px, -2px); }
+    .btn-sm { min-height: 40px; padding: 0 16px; border-radius: 10px; font-size: 13px; }
+    .btn-login { color: var(--text); background: rgba(255, 255, 255, .03); border-color: rgba(255, 255, 255, .16); }
+    .btn-login:hover { border-color: var(--accent); background: rgba(0, 200, 150, .07); }
+    .btn-signup { color: #03261e; background: var(--accent); border-color: var(--accent); box-shadow: 0 8px 26px rgba(0, 200, 150, .2); }
+    .btn-signup:hover { color: var(--accent); background: var(--bg); box-shadow: 0 10px 32px rgba(0, 200, 150, .28); }
+
+    /* ============ HEADER ============ */
+    .nav { position: sticky; top: 0; z-index: 100; background: rgba(6, 16, 20, .78); -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%); border-bottom: 1px solid var(--line); transition: box-shadow .3s, background .3s; }
+    .nav.scrolled { background: rgba(6, 16, 20, .92); box-shadow: 0 10px 35px rgba(0, 0, 0, .28); }
+    .nav-container { width: min(1240px, 92%); min-height: 80px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .brand img { width: 48px; height: 48px; object-fit: cover; border-radius: 14px; border: 1px solid rgba(0, 200, 150, .4); transition: transform .3s; }
+    .brand:hover img { transform: scale(1.06) rotate(-3deg); }
+    .brand-text { display: flex; flex-direction: column; gap: 5px; }
+    .brand-text strong { font-size: 21px; font-weight: 800; letter-spacing: 1.4px; line-height: 1; }
+    .brand-text small { color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: 3.5px; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-links a { position: relative; padding: 12px 15px; color: var(--muted); font-size: 14px; font-weight: 600; border-radius: 10px; transition: color .2s, background .2s; }
+    .nav-links a:hover { background: rgba(255, 255, 255, .05); }
+    .nav-links a.active { color: var(--accent-soft); background: rgba(0, 200, 150, .09); }
+    .nav-links a.active::after { content: ""; position: absolute; left: 30%; bottom: 4px; width: 40%; height: 2px; border-radius: 10px; background: var(--accent); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .menu { display: none; width: 44px; height: 44px; padding: 10px; background: rgba(255, 255, 255, .04); border: 1px solid var(--line); border-radius: 11px; cursor: pointer; }
+    .menu span { display: block; width: 100%; height: 2px; margin: 5px 0; background: #fff; border-radius: 5px; transition: transform .25s, opacity .25s; }
+
+    /* ============ PAGE HEAD ============ */
+    .page-head { position: relative; isolation: isolate; overflow: hidden; padding: 80px 0 72px; }
+    .page-head::before { content: ""; position: absolute; inset: 0; z-index: -1; -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent);
+      background: radial-gradient(55% 60% at 82% 38%, rgba(0, 200, 150, .16), transparent 70%), radial-gradient(45% 45% at 0 0, rgba(6, 50, 75, .55), transparent 70%),
+        linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px) 0 0 / 48px 48px; }
+    .head-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+    .kicker { display: inline-flex; align-items: center; gap: 9px; padding: 7px 15px; border: 1px solid rgba(0, 200, 150, .35); border-radius: 999px; background: rgba(0, 200, 150, .1); color: var(--kicker); font-size: 14px; font-weight: 500; }
+    .kicker i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(0, 200, 150, .2); }
+    .page-head h1 { margin: 22px 0 18px; font-size: clamp(38px, 5.6vw, 64px); font-weight: 800; line-height: 1.04; letter-spacing: -.035em; color: #fff; }
+    .page-head h1 em { font-style: normal; background: linear-gradient(90deg, var(--accent), var(--mint)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lead { max-width: 34em; margin-bottom: 28px; color: var(--muted); font-size: 17px; line-height: 1.7; }
+    .techs { display: flex; flex-wrap: wrap; gap: 10px; }
+    .techs li { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--panel); font: 500 13.5px var(--mono); }
+    .techs li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--accent)); }
+
+    .video-container { position: relative; width: 100%; max-width: 580px; margin-left: auto; padding: 6px; border-radius: 26px; background: linear-gradient(135deg, #00c896, #06324b 55%, rgba(156, 245, 219, .55)); box-shadow: 0 40px 80px -30px rgba(0, 200, 150, .38), 0 20px 50px rgba(0, 0, 0, .45); transition: transform .35s, box-shadow .35s; }
+    .video-container::before { content: ""; position: absolute; inset: -30px; z-index: -1; border-radius: 50%; background: radial-gradient(closest-side, rgba(0, 200, 150, .28), transparent); filter: blur(24px); }
+    .video-container:hover { transform: translateY(-4px); box-shadow: 0 0 28px rgba(0, 200, 150, .22), 0 44px 90px -30px rgba(0, 200, 150, .45), 0 25px 60px rgba(0, 0, 0, .45); }
+    .video-container video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: var(--bg); border-radius: 20px; }
+    .video-chip { position: absolute; top: -15px; left: 22px; display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--panel); color: var(--kicker); font-size: 13px; font-weight: 500; pointer-events: none; }
+    .video-chip b { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+    /* ============ COURSES ============ */
+    .courses { padding: 24px 0 100px; }
+    .filters { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip { padding: 10px 18px; border: 1px solid var(--line-strong); border-radius: 50px; background: rgba(255, 255, 255, .03); color: var(--muted); font: 600 13px var(--font); cursor: pointer; transition: color .2s, background .2s, border-color .2s; }
+    .chip:hover { border-color: var(--accent); }
+    .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #03261e; }
+    .list-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 40px 0 24px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+    .list-head h2 { font-size: 26px; letter-spacing: -.6px; }
+    .list-head p { color: var(--muted); font-size: 14px; }
+    .list-head strong { color: var(--accent); }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+    .empty { padding: 60px 0; color: var(--muted); text-align: center; }
+
+    /* Card */
+    .course-card { display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 20px; background: var(--surface); transition: transform .3s, border-color .3s, box-shadow .3s; }
+    .course-card:hover { transform: translateY(-5px); border-color: rgba(0, 200, 150, .55); box-shadow: 0 22px 50px -20px rgba(0, 200, 150, .25), 0 18px 40px rgba(0, 0, 0, .25); }
+    .cover { position: relative; isolation: isolate; aspect-ratio: 16 / 10; overflow: hidden; background: #0c2530; }
+    .cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(3, 12, 18, .1), rgba(3, 12, 18, .25) 40%, rgba(3, 12, 18, .92)); pointer-events: none; }
+    .cover img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .5s; }
+    .course-card:hover .cover img { transform: scale(1.05); }
+    .badge, .level, .cover-title, .cover-sub { position: absolute; z-index: 1; }
+    .badge, .level { top: 14px; padding: 6px 11px; border-radius: 50px; font-size: 11px; font-weight: 800; }
+    .badge { left: 14px; background: #b8f7d8; color: #032019; }
+    .badge.premium { background: #e6c17b; }
+    .level { right: 14px; border: 1px solid #49606a; background: rgba(4, 17, 24, .85); color: #fff; }
+    .cover-title { left: 20px; right: 16px; bottom: 38px; font-size: clamp(21px, 2.3vw, 28px); font-weight: 800; line-height: 1.12; letter-spacing: -.5px; }
+    .cover-sub { left: 20px; right: 16px; bottom: 16px; color: #b9d0d8; font-size: 11px; font-weight: 600; letter-spacing: .6px; }
+    .card-body { display: flex; flex: 1; flex-direction: column; padding: 22px; }
+    .category { color: var(--accent); font-size: 13px; font-weight: 700; }
+    .card-body h3 { margin: 8px 0 10px; font-size: 19px; line-height: 1.35; letter-spacing: -.3px; }
+    .card-body p { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; color: var(--muted); font-size: 14px; line-height: 1.75; }
+    .info { display: flex; justify-content: space-between; gap: 10px; margin-top: auto; padding: 16px 0; border-bottom: 1px solid var(--line); color: var(--faint); font-size: 12px; }
+    .card-body p { margin-bottom: 18px; }
+    .card-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 18px; }
+    .price { font-size: 26px; font-weight: 800; letter-spacing: -.5px; }
+    .course-card:nth-child(-n+3) .price { color: var(--accent); }
+
+    /* ============ FOOTER ============ */
+    .footer { padding: 72px 0 0; border-top: 1px solid var(--line); background: var(--deep); }
+    .footer-grid { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 40px; }
+    .footer-brand p { max-width: 340px; margin: 18px 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
+    .socials { display: flex; flex-wrap: wrap; gap: 8px; }
+    .socials a { padding: 7px 14px; border: 1px solid var(--line-strong); border-radius: 50px; color: var(--muted); font-size: 12px; font-weight: 600; }
+    .footer-title { display: block; margin-bottom: 14px; color: var(--faint); font-size: 12px; font-weight: 700; letter-spacing: 1.4px; }
+    .footer-links a { display: inline-block; padding: 6px 0; color: var(--muted); font-size: 14px; }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; margin-top: 56px; padding: 22px 0 26px; border-top: 1px solid var(--line); }
+    .footer-bottom p { color: var(--faint); font-size: 13px; }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 1050px) {
+      .nav-container { gap: 14px; }
+      .nav-links a { padding: 11px 10px; font-size: 13px; }
+      .btn { padding: 0 14px; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .footer-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-brand { grid-column: 1 / -1; }
+    }
+    @media (max-width: 900px) {
+      .page-head { padding: 52px 0 56px; }
+      .head-grid { grid-template-columns: 1fr; gap: 44px; }
+      .video-container { margin: 0 auto; max-width: 640px; }
+    }
+    @media (max-width: 760px) {
+      .nav-container { min-height: 74px; flex-wrap: wrap; gap: 12px; }
+      .brand img { width: 43px; height: 43px; }
+      .brand-text strong { font-size: 19px; }
+      .menu { display: block; margin-left: auto; flex-shrink: 0; }
+      .nav-links { display: none; order: 3; width: 100%; flex-direction: column; align-items: stretch; gap: 5px; padding: 8px 0 12px; }
+      .nav-links.open { display: flex; animation: slide .25s ease; }
+      .nav-links a { padding: 14px 15px; font-size: 15px; }
+      .nav-links a.active::after { display: none; }
+      .nav-actions { display: none; order: 4; width: 100%; padding-bottom: 18px; }
+      .nav-actions.open { display: flex; }
+      .nav-actions .btn { flex: 1; min-height: 48px; }
+      .menu.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      .menu.is-open span:nth-child(2) { opacity: 0; }
+      .menu.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    }
+    @media (max-width: 640px) {
+      .page-head .lead { font-size: 16px; }
+      .video-container { padding: 4px; border-radius: 20px; }
+      .video-container video { border-radius: 16px; }
+      .courses { padding-bottom: 64px; }
+      .grid { grid-template-columns: 1fr; }
+      .filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+      .chip { flex-shrink: 0; }
+      .list-head { flex-direction: column; gap: 4px; }
+      .footer { padding-top: 52px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px 20px; }
+    }
+    @keyframes slide { from { opacity: 0; transform: translateY(-7px); } to { opacity: 1; transform: none; } }
+    @media (hover: none), (prefers-reduced-motion: reduce) { .video-container:hover, .course-card:hover { transform: none; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+    /* ============ TEXT HOVER: qoraal kasta => --hover (#00c896). Hoos ku hay, si uu kuwa kale ka adkaado ============ */
+    @media (hover: hover) {
+      :is(h1, h2, h3, p, li, small, strong, .crumbs a, .nav-links a:not(.active), .footer a):hover { color: var(--hover); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header class="nav" id="siteHeader">
+    <div class="nav-container">
+      <a class="brand" href="INDEX.HTML" aria-label="Caabi Academy Home">
+        <img src="./Images/LOGO.jpeg" alt="Caabi Academy Logo">
+        <div class="brand-text"><strong>CAABI</strong><small>ACADEMY</small></div>
+      </a>
+
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="INDEX.HTML">Home</a>
+        <a href="Course.html" class="active" aria-current="page">Courses</a>
+        <a href="About.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn btn-login" href="Login.html">Login</a>
+        <a class="btn btn-signup" href="SIGN%20UP.html">Bilow Hadda <span>↗</span></a>
+      </div>
+
+      <button class="menu" id="menuBtn" type="button" aria-label="Fur menu-ga" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ================= PAGE HEAD ================= -->
+    <section class="page-head">
+      <div class="wrap head-grid">
+        <div>
+          <span class="kicker"><i></i> 7 courses available</span>
+          <h1>Dhammaan <br><em>Course-yada</em></h1>
+          <p class="lead">Explore all programming courses at Caabi Academy. Learn HTML, CSS, JavaScript, React, and modern web development technologies step by step. Build real-world projects, strengthen your coding skills, and grow from beginner to professional developer with Somali-language lessons.</p>
+          <ul class="techs" aria-label="Tiknoolajiyada aad baran doonto">
+            <li style="--c:#d6a0ff">HTML</li>
+            <li style="--c:#77c9ff">CSS</li>
+            <li style="--c:#ffd166">JavaScript</li>
+            <li style="--c:#8fe3b0">React</li>
+          </ul>
+        </div>
+
+        <div class="video-container">
+          <span class="video-chip"><b></b> Casharro Af-Soomaali ah</span>
+          <video src="./1004.mp4" controls preload="metadata" playsinline poster="./Images/AI.png">
+            Browser-kaagu ma taageerayo video-ga.
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= COURSES ================= -->
+    <section class="courses" id="courses">
+      <div class="wrap">
+
+        <div class="filters" role="group" aria-label="Filter courses">
+          <button class="chip" type="button" data-filter="all" aria-pressed="true">All Courses</button>
+          <button class="chip" type="button" data-filter="web" aria-pressed="false">Web Development</button>
+          <button class="chip" type="button" data-filter="databases" aria-pressed="false">Databases</button>
+          <button class="chip" type="button" data-filter="languages" aria-pressed="false">Programming Languages</button>
+        </div>
+
+        <div class="list-head">
+          <h2 id="listTitle">All Courses</h2>
+          <p><strong id="resultCount">7</strong> courses found</p>
+        </div>
+
+        <div class="grid">
+
+          <!-- 01 HTML -->
+          <article class="course-card" data-cat="web">
+            <div class="cover">
+              <img src="./Images/HTML COURSE CHAT.png" alt="HTML5 Full Course" loading="lazy">
+              <span class="badge">Web Development</span>
+              <span class="level">Beginner</span>
+              <span class="cover-title">HTML5<br>Full Course</span>
+              <span class="cover-sub">Build your first website</span>
+            </div>
+            <div class="card-body">
+              <span class="category">Web Development</span>
+              <h3>HTML5 for Beginners: Build Your First Web Pages</h3>
+              <p>Learn how websites are built from scratch: tags, headings, links, images, tables and forms. Explore semantic HTML5 and audio and video, then finish with hands-on projects that prepare you for CSS and JavaScript.</p>
+              <div class="info"><span>◷ 5 Hours</span><span>All Levels</span></div>
+              <div class="card-foot">
+                <strong class="price">$10.00</strong>
+                <a class="btn btn-signup btn-sm" href="HTML CSS COURSE.html">Buy Course <span>↗</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 02 CSS -->
+          <article class="course-card" data-cat="web">
+            <div class="cover">
+              <img src="./Images/Css ourse.png" alt="CSS Full Course" loading="lazy">
+              <span class="badge">Web Development</span>
+              <span class="level">Beginner</span>
+              <span class="cover-title">CSS3<br>Masterclass</span>
+              <span class="cover-sub">Design • Style • Responsive</span>
+            </div>
+            <div class="card-body">
+              <span class="category">Web Development</span>
+              <h3>CSS Masterclass: From Fundamentals to Advanced Styling</h3>
+              <p>Turn simple HTML pages into modern, professional websites. Master colors, typography, Flexbox, CSS Grid, animations and responsive design, then build interfaces that work on desktop, tablet and mobile.</p>
+              <div class="info"><span>◷ 13 Hours</span><span>All Levels</span></div>
+              <div class="card-foot">
+                <strong class="price">$10.00</strong>
+                <a class="btn btn-signup btn-sm" href="Css Course.html">Buy Course <span>↗</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 03 JAVASCRIPT -->
+          <article class="course-card" data-cat="web languages">
+            <div class="cover">
+              <img src="./Images - Copy/Black and Orange Burger Food YouTube Thumbnail.png" alt="JavaScript Full Course" loading="lazy">
+              <span class="badge">Web Development</span>
+              <span class="level">Intermediate</span>
+              <span class="cover-title">JavaScript<br>Developer</span>
+              <span class="cover-sub">Logic • DOM • Projects</span>
+            </div>
+            <div class="card-body">
+              <span class="category">Programming</span>
+              <h3>JavaScript Masterclass: ES6+, DOM &amp; Async Patterns</h3>
+              <p>Go from the fundamentals to advanced concepts: ES6+, functions, arrays, objects, DOM manipulation and events. Understand promises, async/await and API integration while building real-world projects.</p>
+              <div class="info"><span>◷ 18 Hours</span><span>Intermediate</span></div>
+              <div class="card-foot">
+                <strong class="price">$10.00</strong>
+                <a class="btn btn-signup btn-sm" href="Javascript.html">Buy Course <span>↗</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 04 REACT -->
+          <article class="course-card" data-cat="web">
+            <div class="cover">
+              <img src="./Images/react-mastery.webp" alt="React.js Course" loading="lazy">
+              <span class="badge premium">Premium</span>
+              <span class="level">Practical</span>
+              <span class="cover-title">React.js<br>Masterclass</span>
+              <span class="cover-sub">Build modern UI</span>
+            </div>
+            <div class="card-body">
+              <span class="category">Web Development</span>
+              <h3>React.js Masterclass: Modern Frontend with Hooks</h3>
+              <p>Master components, JSX, props, state, Hooks, forms, React Router and API integration, and build reusable, responsive interfaces through real-world projects.</p>
+              <div class="info"><span>◈ Practical Learning</span><span>Premium</span></div>
+              <div class="card-foot">
+                <strong class="price">$10.00</strong>
+                <a class="btn btn-signup btn-sm" href="React.js Masterclass.html">Buy Course <span>↗</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 05 NODE.JS -->
+          <article class="course-card" data-cat="web languages">
+            <div class="cover">
+              <img src="./Images/node-and-express.webp" alt="Node.js Masterclass" loading="lazy">
+              <span class="badge premium">Premium</span>
+              <span class="level">Advanced</span>
+              <span class="cover-title">Node.js<br>Backend</span>
+              <span class="cover-sub">Modern backend engineering</span>
+            </div>
+            <div class="card-body">
+              <span class="category">Web Development</span>
+              <h3>Node.js Backend: Build Production-Ready REST APIs</h3>
+              <p>Use Node.js and Express.js to build fast, secure, scalable backends: REST APIs, routing, middleware, authentication, database integration, error handling and input validation.</p>
+              <div class="info"><span>◈ Project Based</span><span>Premium</span></div>
+              <div class="card-foot">
+                <strong class="price">$15.00</strong>
+                <a class="btn btn-signup btn-sm" href="Node js.html">Buy Course <span>↗</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 06 MONGODB -->
+          <article class="course-card" data-cat="databases">
+            <div class="cover">
+              <img src="./Images/mongodb.webp" alt="MongoDB Course" loading="lazy">
+              <span class="badge premium">Premium</span>
+              <span class="level">Database</span>
+              <span class="cover-title">MongoDB<br>Masterclass</span>
+              <span class="cover-sub">NoSQL • CRUD • Node.js</span>
+            </div>
+            <div class="card-body">
+              <span class="category">Databases</span>
+              <h3>MongoDB Masterclass: NoSQL Database Development &amp; Integration</h3>
+              <p>Learn CRUD operations, collections, documents, queries and data modeling, then connect MongoDB to Node.js and Express.js to build dynamic, data-driven applications.</p>
+              <div class="info"><span>◈ Hands-on Learning</span><span>Premium</span></div>
+              <div class="card-foot">
+                <strong class="price">$15.00</strong>
+                <a class="btn btn-signup btn-sm" href="mango Bd.html">Buy Course <span>↗</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 07 PYTHON -->
+          <article class="course-card" data-cat="languages">
+            <div class="cover">
+              <img src="./Images/python-intermediate.webp" alt="Python Course" loading="lazy">
+              <span class="badge premium">Premium</span>
+              <span class="level">All Levels</span>
+              <span class="cover-title">Python<br>Masterclass</span>
+              <span class="cover-sub">Automation • Data • AI</span>
+            </div>
+            <div class="card-body">
+              <span class="category">Programming</span>
+              <h3>Python Masterclass: From Beginner to Advanced Programming</h3>
+              <p>Learn variables, data types, loops, functions, OOP, file handling and error handling, then explore the libraries behind automation, web development, data science and AI.</p>
+              <div class="info"><span>◈ Hands-on Learning</span><span>Premium</span></div>
+              <div class="card-foot">
+                <strong class="price">$10.00</strong>
+                <a class="btn btn-signup btn-sm" href="Python.html">Buy Course <span>↗</span></a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <p class="empty" id="empty" hidden>Weli course kuma jiro category-gan.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <a class="brand" href="INDEX.HTML" aria-label="Caabi Academy Home">
+            <img src="./Images/LOGO.jpeg" alt="Caabi Academy Logo">
+            <div class="brand-text"><strong>CAABI</strong><small>ACADEMY</small></div>
+          </a>
+          <p>Baro coding-ka Af-Soomaali, dhis projects dhab ah, kuna soco roadmap sax ah oo ku gaarsiinaya inaad noqoto Software Developer xirfad leh.</p>
+          <div class="socials" aria-label="Social links">
+            <a href="https://www.youtube.com/@SuhaibMoha-u2d" target="_blank" rel="noopener">YouTube</a>
+            <a href="https://github.com/SUHAYB925" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a>
+          </div>
+        </div>
+
+        <nav aria-label="Learning">
+          <strong class="footer-title">LEARNING</strong>
+          <ul class="footer-links">
+            <li><a href="#">Mentorship Program</a></li>
+            <li><a href="Course.html">Courses</a></li>
+            <li><a href="About.html">About</a></li>
+            <li><a href="https://www.youtube.com/@SuhaibMoha-u2d">YouTube</a></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Company">
+          <strong class="footer-title">COMPANY</strong>
+          <ul class="footer-links">
+            <li><a href="INDEX.HTML">Home</a></li>
+            <li><a href="About.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Legal">
+          <strong class="footer-title">LEGAL</strong>
+          <ul class="footer-links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+            <li><a href="#">Refund Policy</a></li>
+          </ul>
+        </nav>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Caabi Academy. All rights reserved.</p>
+        <p>Proudly built in Somalia.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const header   = document.getElementById("siteHeader");
+      const menuBtn  = document.getElementById("menuBtn");
+      const links    = document.getElementById("navLinks");
+      const actions  = document.querySelector(".nav-actions");
+
+      /* ---------- Mobile menu ---------- */
+      const setMenu = (open) => {
+        links.classList.toggle("open", open);
+        actions.classList.toggle("open", open);
+        menuBtn.classList.toggle("is-open", open);
+        menuBtn.setAttribute("aria-expanded", String(open));
+        menuBtn.setAttribute("aria-label", open ? "Xir menu-ga" : "Fur menu-ga");
+      };
+      menuBtn.addEventListener("click", () => setMenu(!links.classList.contains("open")));
+      links.addEventListener("click", (e) => { if (e.target.closest("a")) setMenu(false); });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+      window.matchMedia("(min-width: 761px)").addEventListener("change", (e) => { if (e.matches) setMenu(false); });
+
+      /* ---------- Header shadow on scroll ---------- */
+      const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 20);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      /* ---------- Category filter ---------- */
+      const chips  = [...document.querySelectorAll(".chip")];
+      const cards  = [...document.querySelectorAll(".course-card")];
+      const count  = document.getElementById("resultCount");
+      const title  = document.getElementById("listTitle");
+      const empty  = document.getElementById("empty");
+
+      chips.forEach((chip) => chip.addEventListener("click", () => {
+        const cat = chip.dataset.filter;
+        let shown = 0;
+
+        chips.forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+        cards.forEach((card) => {
+          const match = cat === "all" || card.dataset.cat.split(" ").includes(cat);
+          card.hidden = !match;
+          if (match) shown++;
+        });
+
+        count.textContent = shown;
+        title.textContent = chip.textContent;
+        empty.hidden = shown !== 0;
+      }));
+    })();
+  </script>
+</body>
+</html>
